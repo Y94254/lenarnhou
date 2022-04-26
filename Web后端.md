@@ -1748,7 +1748,7 @@ List 集合常用的子类：ArrayList ,LinkedList
 
 
 
-* public E getFirst()
+* public E getFirst()   
 
 
 
@@ -2034,14 +2034,6 @@ TreeSet集合练习
 
 
 
-
-
-
-
-
-
-
-
 ##### 4.4 泛型接口
 
 泛型接口定义格式： 
@@ -2061,6 +2053,141 @@ TreeSet集合练习
 * List<?>:表示元素类型位置的List，它的元素可以匹配任何类型
 * 这种带通配符的List仅表示它是各种泛型的父类，并不能把元素添加到其中
 
+如果我们不希望List<？>是任何类型List的父类，只希望它代表某一类泛型List的父类，可以使用通配符上限
+
+* 类型通配符上限：**< ? extends 类型>**
+
+* List< ?extends Number>:它表示的类型是Number或者其子类型
+
+  也可以指定类型通配符的下限
+
+* 类型通配符下限   ：**< ? super>**
+
+* List < ?super Number>:它表示的类型是Number或者其父类型
+
+  ~~~
+  import java.util.ArrayList;
+  import java.util.List;
+  //Object->Number->Integer
+  public class Demo {
+      public static void main(String[] args) {
+          List<?> l1 =new ArrayList<Object>();
+          List<?> l2=new ArrayList<Number>();
+          List<?> l3=new ArrayList<Integer>();
+          System.out.println("_________________");
+          
+    //      List<? extends Number> l4=new ArrayList<Object>();
+             List<? extends Number> l4=new ArrayList<Number>();
+             List<? extends Number> l5=new ArrayList<Number>();
+             List<? extends Number> l6=new ArrayList<Integer>();
+  
+          System.out.println("____________________");
+          
+          
+          List<? super Number> l7 =new ArrayList<Object>();
+          List<? super Number> l8 =new ArrayList<Number>();
+         // List<? super Number> l9 =new ArrayList<Integer>();
+          
+          
+       }
+  }
+  
+  ~~~
+
+  
+
+##### 4.6可变参数
+
+可变参数又称参数的个数可变，用作方法的形参出现，那么方法参数个数就是可变的了
+
+* 格式：修饰符    返回值类型   方法名（数据类型...变量名）{}
+* 范例：public static void int sum(int...a){}
+
+~~~
+	public class Demo {
+    public static void main(String[] args) {
+
+        System.out.println(sum(10,20));
+        System.out.println(sum(10,20,30));
+        System.out.println(sum(10,20,30,40));
+        System.out.println(sum(10,20,30,40,50));
+        System.out.println(sum(10,20,30,40,50,60));
+    }
+    public static  int sum(int ...a){
+        int sum=0;
+        for(int i:a){
+            sum+=i;
+        }
+        return  sum;
+    }
+}
+
+~~~
+
+
+
+**可变参数注意事项：**
+
+* 这里的变量其实是一个数组
+* 如果一个方法有多个变量，包含可变参数，**可变参数放在最后**
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### 4.7可变参数的使用
+
+Arrays工具类中有一个静态方法：
+
+* public static < T > List< T >asList(T...a) :返回由指定数组支持的固定大小的列表
+
+* 返回的集合不能做增删操作，可以做修改操作
+
+
+
+
+
+List接口中有一个静态方法
+
+* public static < E >List< E >of(E...elements):返回包含任意数量元素的不可变列表
+* 返回的集合不能做增删改操作
+
+
+
+Set接口中有一个静态方法
+
+*  pubic static < E >Set< E > of(E...elements):返回一个包含任意元素的不可变集合
+* 再给元素的时候，不能给重复元素
+* 返回的集合不能做增删操作，没有修改的方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2071,6 +2198,26 @@ TreeSet集合练习
 
 #### 5、Map
 
+##### 5.1 Map集合的概述和使用
+
+Map集合概述
+
+* Interface Map<K,V>    K:键的类型；      V:值的类型
+
+* 将建映射到值的对象；不能包含重复的键；每个键可以映射到最多一个值
+
+* 举例 ：学生的学号和姓名
+
+  ​				itheima001     张三
+
+  ​				itheima002    李四
+
+​					   itheima003    王五
+
+创建Map集合对象
+
+* 多态的方式
+* 具体的实现类HashMap
 
 
 
@@ -2086,6 +2233,220 @@ TreeSet集合练习
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+##### 5.2 Map 集合的基本功能
+
+* V put(K key,V value)           添加元素
+
+  
+
+* V remove(Object key)        根据键删除键值对元素
+
+  
+
+* void clear ()                          移除所有的键值对元素
+
+  
+
+* boolean containsKey(Object key)           判断集合是否包含指定的键
+
+  
+
+* boolean containsValue(Object value)    判断集合是否包含指定的值
+
+  
+
+* boolean isEmpty()               判断集合是否为空
+
+  
+
+* int size()                               集合的长度，也就是集合中键值对的个数
+
+​                         
+
+
+
+
+
+
+
+
+
+
+
+##### 5.3 Map 集合的获取功能
+
+* V get (Object key )                根据键获取值
+
+  ~~~
+  		 Map<String,String> map=new HashMap<String,String>();
+          map.put("张无忌","赵敏");
+          map.put("郭靖","黄蓉");
+          map.put("杨过","小龙女");
+          System.out.println(map.get("张无忌"));//输出赵敏
+          System.out.println(map.get("张三丰"));//输出null
+  ~~~
+
+  
+
+* Set< K >keySet()                   获取所有键得集合
+
+  ~~~
+  		 Map<String,String> map=new HashMap<String,String>();
+          map.put("张无忌","赵敏");
+          map.put("郭靖","黄蓉");
+          map.put("杨过","小龙女");
+          Set<String> keyset=map.keySet();
+          for(String s:keyset){
+              System.out.println(s);
+          }	//输出：
+         			 杨过
+  				 郭靖
+  				 张无忌
+  ~~~
+
+  
+
+* Collection< V >values()       获取所有值得集合
+
+  ~~~
+  		Map<String,String> map=new HashMap<String,String>();
+          map.put("张无忌","赵敏");
+          map.put("郭靖","黄蓉");
+          map.put("杨过","小龙女");
+          Collection<String> values =map.values();
+          for(String s:values){
+              System.out.println(s);
+          }	//输出：
+          		小龙女
+  			    黄蓉
+  				赵敏
+  ~~~
+
+  
+
+* Set< Map.Entry< K,V >>entrySet( )  获取所有键值对象的集合
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### 5.4 Map集合的遍历（方式一）
+
+我们存储的元素都是成对出现的，我们把Map看成是一个夫妻对的集合
+
+遍历思路：
+
+* 把所有丈夫给集中起来
+* 遍历丈夫的集合，获取到每一个丈夫
+* 根据丈夫去找对应的妻子
+
+转化为Map集合中的操作：
+
+* 获取所有键的集合。用keySet（）方法实现
+
+* 遍历键的方法，获取到每一个键。用增强for实现
+
+* 根据键去找值。用get（Object key）方法实现
+
+  ~~~
+   		Map<String,String> map=new HashMap<String,String>();
+          map.put("张无忌","赵敏");
+          map.put("郭靖","黄蓉");
+          map.put("杨过","小龙女");
+          Collection<String> values =map.values();
+          //获取集合所有键的方法
+          Set<String> keySet =map.keySet();
+          //遍历键的集合，获取到每一个键。用增强for实现
+          for(String key:keySet){
+              //根据键去找值。用get（Object key)去实现
+              String value =map.get(key);
+              System.out.println(key+","+value);
+  ~~~
+
+  
+
+
+
+
+
+
+
+
+
+##### 5.5 Map集合的遍历（方式2）
+
+把Map看成是一个夫妻对的集合
+
+遍历思路：
+
+* 获取到所有结婚证的集合
+* 遍历结婚证的集合，得到每一个结婚证
+* 根据结婚证获取丈夫和妻子
+
+
+
+转化为Map集合中的操作：
+
+* 获取所有键值对对象的集合
+
+  ​			**Set< Map.Entry<K,V>>entrySer():获取所有键值对对象的集合**
+
+* 遍历键值对对象的集合，得到每一个键值对对象
+
+  用增强for实现，得到每一个**Map.Entry**
+
+* 根据键值对对象获取键和值
+
+  用getKey（）得到键
+
+  用getValue（）得到值
+
+  ~~~
+   		Map<String,String> map=new HashMap<String,String>();
+          map.put("张无忌","赵敏");
+          map.put("郭靖","黄蓉");
+          map.put("杨过","小龙女");
+          Collection<String> values =map.values();
+          Set<Map.Entry<String,String>> entrySet =map.entrySet();
+          for(Map.Entry<String,String> me:entrySet){
+              String key=me.getKey();
+              String value=me.getValue();
+              System.out.println(key+","+value);
+          }//输出：
+         		 杨过,小龙女
+  			 郭靖,黄蓉
+  			 张无忌,赵敏
+  ~~~
+
+  
 
 
 
@@ -2095,9 +2456,47 @@ TreeSet集合练习
 
 #### 6、Collections
 
+##### 6.1 Collections 概述和使用
+
+Collections类的概述
+
+* 是针对集合操作的工具类
 
 
 
+Collections类的常用操作方法
+
+* public static < T extends Comparable<? super T>> void sort< List< T > list>  将指定的列表按升序排序
+
+  ~~~
+  List<Integer>  list=new ArrayList<Integer>();
+          list.add(30);list.add(20);list.add(100);list.add(40);list.add(50);
+          System.out.println(list);//输出[30, 20, 100, 40, 50]
+          Collections.sort(list);
+          System.out.println(list);//输出[20, 30, 40, 50, 100]
+  ~~~
+
+  
+
+* public static void reverse(List<?> list) 反转指定列表中元素的顺序
+
+  ~~~
+  List<Integer>  list=new ArrayList<Integer>();
+          list.add(30);list.add(20);list.add(100);list.add(40);list.add(50);
+          System.out.println(list);//输出[30, 20, 100, 40, 50]
+          Collections.sort(list);
+          System.out.println(list);//输出[20, 30, 40, 50, 100]
+          System.out.println(list);//输出[100, 50, 40, 30, 20]
+  ~~~
+
+  
+
+* public static void shuffle(List<?> list): 使用默认的随机源随机排列指定的列表
+
+  ~~~
+  ~~~
+
+  
 
 
 
@@ -2124,6 +2523,662 @@ TreeSet集合练习
 
 
 ## I/O
+
+### 1、File
+
+#### 1.1 File类概述和构造方法
+
+File：他是文件和目录路径名的抽象表示
+
+- 文件和目录是可以通过File封装成对象的
+- 对于File而言，其封装的·并不是一个真正存在的文件，仅仅是一个路径而已。它是可以真实存在的，也是可以不存在的。将来是要通过具体的操作把这个路径的内容转化为具体存在的
+
+构造方法
+
+* File(String pathname)：通过将给定的路径名字符串转换为抽象路径名来创建新的File实例
+
+  ~~~
+  		File f1 =new File("D:\\itcast\\java.txt");
+          System.out.println(f1);//输出D:\itcast\java.txt
+  ~~~
+
+  
+
+* File(String parent ,String child)：从父路径名字符串和子路径名字符串创建新的File实例
+
+  ~~~
+  		File f2=new File("D:\\itcast","java.txt");
+          System.out.println(f2);//输出D:\itcast\java.txt
+  ~~~
+
+  
+
+* File(file parent,String child)：从父抽象路径名和子抽象路径名字符串创建新的File实例
+
+  ~~~
+  		File f3=new File("D:\\itcast");
+          File f4=new File(f3,"java.txt");
+          System.out.println(f4);//输出D:\itcast\java.txt
+  ~~~
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 1.2 File类创建功能
+
+* public boolean creatNewFile()：  当具有该名字的文件不存在时，创建一个由该抽象路径名命名的新空文件
+
+  _如果文件不存在，就创建文件，并返回true_
+
+  _如果文件存在，就不创建文件，并返回false_
+
+* public boolean mkdir()：创建由此抽象路径名命名的目录
+
+  _如果目录不存在，就创建目录，并返回true_
+
+  _如果目录存在，就不创建目录，并返回false_
+
+* public boolean mkdirs()：创建由此抽象路径名命名的目录，包括任何必须但不存在的父目录
+
+  _如果多级目录不存在，就创建多级目录，并返回true_
+
+  _如果多级目录存在，就不创建多级目录，并返回false_
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 1.3 File类删除功能
+
+* public boolean delete()：删除由此抽象路径表示的文件或目录
+
+
+
+绝对路径和相对路径的区别
+
+* 绝对路径：**完整的路径名，**不需要任何其他的信息就可以定位它所表示的的文件。例如：**D: \\\FileTest\\\java.txt**
+* 相对路径：必须使用取自其他路径名的信息进行解释。例如：**myFile\\\java.txt**
+
+
+
+删除目录时的注意事项：
+
+* 如果一个**目录中有内容**（目录，文件），**不能直接删除**。应该先删除目录中的内容，最后才能删除目录
+
+
+
+
+
+
+
+
+
+#### 1.4File类判断和获取功能
+
+* public boolean isDirectory()：测试此抽象路径名表示的File是否为目录
+* public boolean isFile()：测试此抽象路径名表示的File是否为文件
+* public boolean exists()：测试此抽象路径名表示的File是否存在
+* public String getAbsolutePath()：返回此抽象路径名的绝对路径名字符串
+* public String getPath()：将此抽象路径名转换为路径名字符串
+* pubic String getName()：返回此抽象路径名表示的文件或目录的名称
+* public String[] list()：返回此抽象路径名表示的目录中的文件和目录的名称字符串数组
+* pubic File[]  listFile()：返回此抽象路径表示的目录中的文件和目录的File对象数组
+
+
+
+
+
+
+
+
+
+
+
+#### 1.5 递归
+
+递归概述：以编程的角度来看，递归指的是方法定义中调用方法本身的现象
+
+
+
+递归解决问题的思路：
+
+把一个复杂的问题层层转化为一个**与原问题相似的规模较小**的问题来求解
+
+递归策略只需**少量的程序**就可描述出解题过程所需要的多次重复计算
+
+
+
+递归解决问题要找到两个内容：
+
+* 递归出口：否则会出现内存溢出
+* 递归规则：与原问题相似的规模较小的问题
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、字节流
+
+#### 2.1 IO流概述和分类
+
+IO流概述:
+
+* IO:输入/输出(Input/Output)
+
+* 流：是一种抽象的概念，是对数据传输的总称。也就是说数据在设备间的传输称为流，流的本质是数据传输
+
+* IO流就是用来处理设备间的传输问题的
+
+  ​               常见的应用：文件复制；文件上传；文件下载；
+
+
+
+IO流分类：
+
+* 按数据的流向
+
+  ​		输入流：读数据
+
+  ​		输出流：写数据
+
+* 按数据类型来分
+
+  ​		字节流
+
+  ​							字节输入流；字节输出流
+
+  ​		字符流
+
+  ​							字符输入流；字符输出流
+
+* 如果数据通过Window自带的记事本打开，我们可以读懂里面的内容，就用字符流，否者用字节流。不知的情况下用字节流
+
+
+
+
+
+
+
+#### 2.2 字节流写数据
+
+ 字节流抽象基类
+
+* InputStream ：这个抽象类是表示字节输入流的所有类的超类
+* OutputStream：这个抽象类是表示字节输出流的所有类的超类
+* 子类名特点：子类名称都是以其父类名作为子类名的后缀
+
+
+
+
+
+FileOutputStream：文件输出流用于将数据写入File
+
+* FileOutputStream（String name）：创建文件输出流以指定的名称写入文件
+
+
+
+
+
+使用字节输出流写数据的步骤：
+
+* 创建字节输出流对象（调用系统的功能创建了文件，创建字节输出流对象，让字节输出流对象指向文件）
+* 调用字节输出流对象写数据的方法
+* 释放资源（关闭此文件输出流并释放与此流相关联的任何系统资源）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2.3 字节流写数据的三种方法
+
+
+
+* void write(int b):将指定的字节写入此文件输出流，一次写一个字节数据
+* void write(byte[] b): 将b.length 字节从指定的字节数组写入此文件输出流。一次写入一个字节数组的数据
+* void write(byte[] b,int off,int len):将len 字节从指定的字节数组开始，从偏移量off开始写入此文件的输出流 。一次写一个字节数组的部分数据
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2.4 字节流写数据的两个小问题
+
+字节流写数据如何实现换行
+
+* 写完数据后，加换行符”\n“
+
+字节流写数据如何实现追加写入
+
+* public FileOutputStream(String name,boolean append)
+* 创建文件输出流以指定的名称写入文件。如果第二个参数为true，则字节将写入文件的末尾而不是开头
+
+
+
+
+
+
+
+
+
+#### 2.5 字节流写数据加异常处理
+
+**finally**：在异常处理时提供finally块来执行所有清楚操作。比如说IO流中的释放资源
+
+特点：被finally控制的语句一定会执行，除非JVM退出
+
+~~~
+try{
+	可能出现异常的代码；
+}catch(异常类名  变量名){
+	异常处理的代码；
+}finally{
+	执行所有清楚操作；
+}
+~~~
+
+
+
+
+
+
+
+
+
+#### 2.6字节流读数据
+
+##### 2.6.1一次读一个字节的数据
+
+需求：把文件 fos.txt 中的内容读取出来在控制台输出
+
+
+
+FileInputStream:从文件系统中的文件获取输入字节
+
+* FileInputStream（String name）：通过打开与实际文件的连接来创建一个FileInputStream,该文件由文件系统中的路径名name命名
+
+
+
+使用字节输入流读数据的步骤：
+
+1. 创建字节输入流对象
+2. 调用字节输入流对象的读数据方法
+3. 释放资源
+
+
+
+
+
+
+
+~~~
+public static void main(String[] args) throws IOException {
+        FileInputStream fis=new FileInputStream("D:\\FileTest\\git 学习.txt");
+        FileOutputStream fos =new FileOutputStream("myByteStream\\git学习.txt");
+        int bys;
+        while((bys=fis.read())!=-1){
+            fos.write(bys);
+        }
+        fos.close();
+        fis.close();
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### 2.6.2一次读一个字节数组数据
+
+需求：把文件fos.txt中的内容读出来在控制台输出
+
+使用字节输入流读数据的步骤
+
+1. 创建字节输入流对象
+2. 调用字节输入流对象的读数据方法
+3. 释放资源
+
+
+
+~~~
+FileInputStream fis = new FileInputStream("myByteStream\\fos.txt");
+        byte[] bys = new byte[1024];//1024及其整数倍
+        int len;
+        while ((len = fis.read(bys)) != -1) {
+            System.out.println(new String(bys, 0, len));
+        }
+        fis.close();
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2.7 字节缓冲流
+
+* BufferedOutputStream: 该类实现缓冲输出流。通过设置这样的输出流应用程序可以向底层输出流写入字节，而不必为写入的每一个字节导致底层系统的调用
+* BufferedInputStream:创建BufferedInputStream 将创建一个内部缓冲区数组。当从流中读取或者跳过字节时，内部缓冲区将根据需要从所含的输入流中重新填充，一次很多字节
+
+
+
+构造方法：
+
+* 字节缓冲输出流：BufferedOutputStream(OutputStream out)
+* 字节缓冲输入流：BufferedInputStream(InputStream in)
+
+为什么构造方法需要的时字节流，而不是具体的文件或路径
+
+* 字节缓冲流**仅仅提供缓冲区** ，而真正的读取数据还得依靠基本的字节流对象进行操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、字符流
+
+#### 3.1 出现字符流的原因
+
+由于字节流操作中文不是特别方便，所以Java就提供了字符流
+
+* **字符流=字节流 +编码表**
+
+
+
+用字节流复制文本文件时，本地文件也有中文，但是没有问题，原因是最终底层操作会自动进行字拼接成中文，如何识别中文？
+
+* 汉字在存储的时候，无论选择哪种编码储存，第一个字节都是负数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 3.2编码表
+
+基础知识：
+
+* 计算机中存储的信息都是用**二进制**数表示的；我们在屏幕上看到的英文，汉字字符时二进制数转换之后的结果
+
+* 按照某种规则，将字符存储到计算机中，称为边**编码**。反之，将存储在计算机中的二进制数按照某种规则解析显示出来，称为**解码**。如果按照A编码存储，就必须按照A编码解析，否则就会出现乱码
+
+  ​			字符编码：就是一套自然语言的字符与二进制之间的对应规则（A，65）
+
+字符集：
+
+* 是一个系统支持的所有字符的集合，包括个国家的文字、标点符号、图形符号、数字等
+* 计算机要准确的存储和识别各种字符集的符号，就需要进行字符编码，一套字符集必然至少有一套字符编码。常见的字符集由ASCII字符集、GBXXX字符集、Unicode字符集等
+
+Unicode字符集：
+
+* 为表达任意语言的任意字符而设计，是业界的一种标准，也称为统一码、标准万国码。它最多使用四个字节的数字来表达每个字母、符号、或者文字。由三种编码方案、UTF-8、UTF-16、UTF32。最为常用的是UTF-8编码
+* **UTF-8编码**：可以表示Unicode标准中任意字符，它是电子邮件、网页及其他存储或发送文字的应用中，优先采用的编码。互联网工作小组（IETF）要求所有互联网协议都必须支持UTF-8编码。它使用一至四个字节为每个字符编码
+
+
+
+**小结：采用何种规则编码，就要采用对应规则解码，否则就会出现乱码**
+
+
+
+
+
+#### 3.3 字符串中的编码解码问题
+
+编码：
+
+* byte[] getBytes():使用平台的默认字符集将该String编码为一系列字节，将结果存储到新的字节数组中
+* byte[] getBytes(String charsetName): 使用指定的字符集将该String编码为一系列字节，将结果存储到新的字节数组中
+
+解码：
+
+* String(byte[] bytes):通过使用平台的默认字符集解码指定的字节数组来构造性的String
+* String (byte[] bytes,String charsetName):通过指定字符集解码指定的字节数组来构造性的String
+
+
+
+
+
+#### 3.4 字符流中的编码解码问题
+
+字符流抽象基类
+
+* Reader: 字符输出流的抽象类
+* Writer:字符输入流的抽象类
+
+
+
+ 字符流中和编码解码问题相关的两个类
+
+* InputStreamReader
+* OutputStreamWriter
+
+
+
+
+
+
+
+
+
+#### 3.5 字符流写数据的5种方式
+
+* public write(int c)              写一个字符
+* void write(char[] cbuf)       写入一个字符数组
+* void write(char[] cbuf,int off,int len) 写入字符数组的一部分
+* void write(String str)               写入一个字符串
+* void write(String str,int off,int len) 写入一个字符串的一部分
+
+
+
+
+
+
+
+* flush()  刷新流，话可以继续写数据
+* close()  关闭流，释放数据 ，但是关闭之前会先刷新流。一但关闭就不能再写数据
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 3.6 字符流读数据的2种方式
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
