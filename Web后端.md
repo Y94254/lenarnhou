@@ -1,4 +1,4 @@
-# Java基础
+Java
 
   ## 基础语法
 
@@ -535,6 +535,32 @@ public class Outer{
 
 
 
+
+#### 包
+
+
+
+
+
+### 模块
+
+模块的基本使用步骤
+
+* 在模块的src目录下创建一个module-info.java 的描述性文件，该文件专门定义模块名，访问权限，模块的依赖等信息     描述性文件中使用模块导出和模块依赖来进行配置并使用
+
+* 模块中所有未导出的包都是模块私有的，他们是不能再模块之外被访问的 ，在模块下的描述性文件中配置模块导出
+
+  模块导出格式：**exports 包名；**
+
+* 一个模块要访问其他的模块，必须明确指出指定依赖哪些模块，未明确的模块不能访问
+
+  在模块下的描述性文件中配置模块依赖
+
+  模块依赖格式：**requires 模块名；**
+
+**模块服务使用**
+
+模块服务的使用步骤
 
 
 
@@ -1998,6 +2024,19 @@ TreeSet集合练习
 
 ​			**此处的T可以是随便写的任意标识**，如常见的**T  E   K  V**等形式的参数常用于表示泛型
 
+**泛型标记**
+
+定义泛型时，一般采用几个标记：E、T、K、V、N、？。他们约定俗称的含义如下：
+
+| 泛型标记 | 对应单词 | 说明                           |
+| -------- | -------- | ------------------------------ |
+| E        | Element  | 在容器中使用，表示容器中的元素 |
+| T        | Type     | 表示普通的JAVA类               |
+| K        | Key      | 表示键，例如：Map中的键Key     |
+| V        | Value    | 表示值                         |
+| N        | Number   | 表示数值类型                   |
+| ？       |          | 表示不确定的JAVA类型           |
+
 ##### 4.3泛型方法
 
 泛型方法的定义格式：
@@ -2178,11 +2217,19 @@ Set接口中有一个静态方法
 
 
 
+#####  4.8 泛型局限性和常见错误
 
 
 
+泛型主要用于编译阶段，编译后生成的字节码class文件不包含泛型中的类型信息。 类型参数在编译后会被替换成Object，运行时虚拟机并不知道泛型。因此，使用泛型时，如下几种情况是错误的：
 
+1. 基本类型不能用于泛型
 
+   `Test<int> t;` 这样写法是错误，我们可以使用对应的包装类`Test<Integer> t ;`
+
+2. 不能通过类型参数创建对象
+
+   `T elm = new T();` 运行时类型参数`T`会被替换成`Object`，无法创建T类型的对象，容易引起误解，java干脆禁止这种写法。
 
 
 
@@ -2494,34 +2541,8 @@ Collections类的常用操作方法
 * public static void shuffle(List<?> list): 使用默认的随机源随机排列指定的列表
 
   ~~~
-  ~~~
-
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  ~~~
 ## I/O
 
 ### 1、File
@@ -2537,46 +2558,17 @@ File：他是文件和目录路径名的抽象表示
 
 * File(String pathname)：通过将给定的路径名字符串转换为抽象路径名来创建新的File实例
 
-  ~~~
   		File f1 =new File("D:\\itcast\\java.txt");
-          System.out.println(f1);//输出D:\itcast\java.txt
-  ~~~
-
-  
-
+  	      System.out.println(f1);//输出D:\itcast\java.txt
 * File(String parent ,String child)：从父路径名字符串和子路径名字符串创建新的File实例
 
-  ~~~
   		File f2=new File("D:\\itcast","java.txt");
-          System.out.println(f2);//输出D:\itcast\java.txt
-  ~~~
-
-  
-
+  	      System.out.println(f2);//输出D:\itcast\java.txt
 * File(file parent,String child)：从父抽象路径名和子抽象路径名字符串创建新的File实例
 
-  ~~~
   		File f3=new File("D:\\itcast");
-          File f4=new File(f3,"java.txt");
-          System.out.println(f4);//输出D:\itcast\java.txt
-  ~~~
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  	      File f4=new File(f3,"java.txt");
+  	      System.out.println(f4);//输出D:\itcast\java.txt
 #### 1.2 File类创建功能
 
 * public boolean creatNewFile()：  当具有该名字的文件不存在时，创建一个由该抽象路径名命名的新空文件
@@ -2710,7 +2702,7 @@ IO流概述:
 
 * IO流就是用来处理设备间的传输问题的
 
-  ​               常见的应用：文件复制；文件上传；文件下载；
+                 常见的应用：文件复制；文件上传；文件下载；
 
 
 
@@ -2718,19 +2710,19 @@ IO流分类：
 
 * 按数据的流向
 
-  ​		输入流：读数据
-
-  ​		输出流：写数据
+  		输入流：读数据：数据流向是数据源到程序
+	
+  		输出流：写数据：数据流向是程序到目的地
 
 * 按数据类型来分
 
-  ​		字节流
-
-  ​							字节输入流；字节输出流
-
-  ​		字符流
-
-  ​							字符输入流；字符输出流
+  	字节流：以字节为单位获取数据，一般以Stream结尾
+	
+  							字节输入流；字节输出流
+	
+  	字符流：以字符单位获取数据，命名上以Reade/Writer结尾
+	
+  							字符输入流；字符输出流
 
 * 如果数据通过Window自带的记事本打开，我们可以读懂里面的内容，就用字符流，否者用字节流。不知的情况下用字节流
 
@@ -2835,7 +2827,10 @@ FileOutputStream：文件输出流用于将数据写入File
 
 特点：被finally控制的语句一定会执行，除非JVM退出
 
-~~~
+
+
+  ~~~
+
 try{
 	可能出现异常的代码；
 }catch(异常类名  变量名){
@@ -2843,16 +2838,7 @@ try{
 }finally{
 	执行所有清楚操作；
 }
-~~~
-
-
-
-
-
-
-
-
-
+  ~~~
 #### 2.6字节流读数据
 
 ##### 2.6.1一次读一个字节的数据
@@ -2877,40 +2863,6 @@ FileInputStream:从文件系统中的文件获取输入字节
 
 
 
-
-
-~~~
-public static void main(String[] args) throws IOException {
-        FileInputStream fis=new FileInputStream("D:\\FileTest\\git 学习.txt");
-        FileOutputStream fos =new FileOutputStream("myByteStream\\git学习.txt");
-        int bys;
-        while((bys=fis.read())!=-1){
-            fos.write(bys);
-        }
-        fos.close();
-        fis.close();
-~~~
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ##### 2.6.2一次读一个字节数组数据
 
 需求：把文件fos.txt中的内容读出来在控制台输出
@@ -2921,9 +2873,22 @@ public static void main(String[] args) throws IOException {
 2. 调用字节输入流对象的读数据方法
 3. 释放资源
 
-
-
 ~~~
+
+
+public static void main(String[] args) throws IOException {
+        FileInputStream fis=new FileInputStream("D:\\FileTest\\git 学习.txt");
+        FileOutputStream fos =new FileOutputStream("myByteStream\\git学习.txt");
+        int bys;
+        while((bys=fis.read())!=-1){
+            fos.write(bys);
+        }
+        fos.close();
+        fis.close();
+~~~
+~~~
+
+
 FileInputStream fis = new FileInputStream("myByteStream\\fos.txt");
         byte[] bys = new byte[1024];//1024及其整数倍
         int len;
@@ -2932,19 +2897,6 @@ FileInputStream fis = new FileInputStream("myByteStream\\fos.txt");
         }
         fis.close();
 ~~~
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3019,7 +2971,7 @@ FileInputStream fis = new FileInputStream("myByteStream\\fos.txt");
 
 * 按照某种规则，将字符存储到计算机中，称为边**编码**。反之，将存储在计算机中的二进制数按照某种规则解析显示出来，称为**解码**。如果按照A编码存储，就必须按照A编码解析，否则就会出现乱码
 
-  ​			字符编码：就是一套自然语言的字符与二进制之间的对应规则（A，65）
+  			字符编码：就是一套自然语言的字符与二进制之间的对应规则（A，65）
 
 字符集：
 
@@ -3096,35 +3048,29 @@ Unicode字符集：
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### 3.6 字符流读数据的2种方式
 
 
 
+* in read()                            一次读一个字符数据
 
+* in read(char[]  cbuf)       一次读一个字符数组数据
 
 
 
 
 
+#### 3.7 转换流改进
 
+转换流的名字较长，而我们常见的操作都是按照本地默认的编码实现的，所以为了简化书写，转换流提供了对应的子类
 
+* FileReader: 用于读取字符文件的便捷类
 
+ 			FileReader（String fileName）
 
+* FileWriter:用于写入字符文件的便捷类
 
+			FileWriter(String fileName)
 
 
 
@@ -3136,8 +3082,12 @@ Unicode字符集：
 
 
 
+#### 3.8 字符缓冲流
 
+字符缓冲流：
 
+* BufferedWriter:将文本写入字符输出流，缓冲字符，以提供单个字符，数组和字符串的高校读取，可以指定缓冲区的大小，或者接受默认大小。默认值足够大，可用于大多数用途
+* BuffereReader:从字符输入流读取文本，缓冲字符，以提供单个字符，数组和字符串的高校读取，可以指定缓冲区的大小，或者接受默认大小。默认值足够大，可用于大多数用途
 
 
 
@@ -3145,8 +3095,11 @@ Unicode字符集：
 
 
 
+构造方法：
 
+* BufferedWriter(Writer out)
 
+* BufferedReader(Reader in)
 
 
 
@@ -3166,10 +3119,15 @@ Unicode字符集：
 
 
 
+#### 3.9 字符缓冲流特有功能
 
+BufferedWriter:
 
+*  void newLine();写一行行分隔符，行分隔符字符串由系统属性定义
 
+BufferedReader:
 
+* public String readLine():  读一行文字。结果包含行内的内容的字符串，不包括任何终止字符，如果流的结尾已经到达，则为null
 
 
 
@@ -3181,10 +3139,1230 @@ Unicode字符集：
 
 
 
+#### 3.10 IO流小结
 
-## 并发 
 
- 
+
+![image-20220427173524650](C:\Users\27815\AppData\Roaming\Typora\typora-user-images\image-20220427173524650.png)
+
+
+
+
+
+
+
+
+
+![image-20220427173537946](C:\Users\27815\AppData\Roaming\Typora\typora-user-images\image-20220427173537946.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+**案例：复制单极文件夹**
+
+思路：
+
+1. 创建数据源目录File对象，路径是E：\\\itcast
+
+2. 获取数据源目录File对象的名称（itcast）
+
+3. 创建目的地目录File对象，路径名是模块名+ iacast组成(myCharStream\\\itcast)
+
+4. 判断目的地目录对应的File对象是否存在，如果不存在就创建
+
+5. 获取源目录下所有文件的File数组
+
+6. 遍历File数组，得到每一个File对象，该File对象就是数据源文件
+
+   		数据源文件：D：\\\STL\\\第3章STL和基本数据结构.pptx
+
+7. 获取数据源文件File对象名称（第3章STL和基本数据结构.pptx）
+
+8. 创建目的地文件File对象，路径名是目的地目录+数据源文件：第3章STL和基本数据结构.pptx组成的（myCharStream\\\数据源文件：第3章STL和基本数据结构.pptx）
+
+9. 复制文件
+
+**由于文件不仅仅是文本文件，所以采用字节流复制文件**
+
+
+
+
+
+    package itheima01;
+    import java.io.*;
+    
+    public class copyfolderDemo {
+    public static void main(String[] args) throws IOException {
+        File  srcFolder=new File("D:\\STL");
+       String srcFolderName= srcFolder.getName();
+        File destFolder=new File("myCharStream",srcFolderName);
+        if(!destFolder.exists()){
+            destFolder.mkdir();
+        }
+        File[] listFiles=srcFolder.listFiles();
+        for(File srcfile:listFiles){
+            String srcFileName=srcfile.getName();
+            File destFile=new File(destFolder,srcFileName);
+            copyFile(srcfile,destFile);
+        }
+    }
+    public static void copyFile(File srcFile,File destFile) throws IOException {
+        BufferedInputStream bis =new BufferedInputStream(new FileInputStream(srcFile));
+        BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(destFile));
+        byte[] bys=new byte[1024];
+        int len;
+        while((len=bis.read(bys))!=-1){
+            bos.write(bys,0,len);
+        }
+        bos.close();
+        bis.close();
+    }
+    }
+
+
+**案例：复制多级文件夹** 
+
+需求：把”D\\\typora"复制到C盘目录下
+
+思路：
+
+1. 创建数据源File对象，路径是E:\\\typora
+2. 创建目的地File对象，路径是F：\\\
+3. 写方法实现文件夹的复制，参数为数据源File对象和目的地File对象
+4. 判断数据源File是否为目录
+
+					是：
+	
+							A：在目的地下创建和数据源File名称一样的目录
+	
+							B：获取数据源File下所有文件或则目录的File数组
+	
+							C：遍历该File数组，得到每一个File对象
+	
+							D：把该File作为数据源File对象递归调用复制文件夹的方法
+	
+				不是：说明是文件，用字节流实现
+
+~~~
+ itheima_02;
+ import java.io.*;
+
+public class Demo {
+    public static void main(String[] args)throws IOException {
+        File srcFile=new File("D:\\typora");
+        File destFile=new File("C:\\");
+        copyFolder(srcFile,destFile);
+    }
+    //复制文件夹
+    public static void copyFolder(File srcFile,File destFile) throws IOException {
+        if(srcFile.isDirectory()){
+            String srcFileName=srcFile.getName();
+            File newFolder=new File(destFile,srcFileName);//F:\\typora
+            if(!newFolder.exists()){
+                newFolder.mkdir();
+            }
+            File[] files=srcFile.listFiles();
+            for(File file:files){
+                copyFolder(file,newFolder);
+            }
+        }
+        else{
+            File newFile=new File(destFile,srcFile.getName());
+            copyFile(srcFile,destFile);
+        }
+    }
+    //字节缓冲流方法复制文件
+    public static  void copyFile(File srcFile,File destFile) throws IOException {
+        BufferedInputStream bis=new BufferedInputStream(new FileInputStream(srcFile));
+        BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(destFile));
+        int len;
+        byte[] bys =new byte[1024];
+        while((len=bis.read(bys))!=-1){
+            bos.write(bys,0,len);
+        }
+        bis.close();
+        bos.close();
+
+    }
+
+}
+~~~
+#### 3.11 复制文件的异常处理
+
+try...catch...finally的做法：
+
+~~~
+try{
+	可能出现异常的代码；
+}catch(异常类名 变量名){
+	异常的处理代码；
+}finally{
+	执行所有清除操作；
+}
+
+
+
+~~~
+JDK7改进方案：
+~~~
+try(定义流对象){
+	可能出现异常的代码；
+}catch(异常类名 变量名){
+	异常的处理代码；
+}
+自动释放资源
+
+
+~~~
+JDK9改进方案：
+~~~
+
+定义输入流对象
+定义输出流对象
+try(输入流对象；输出流对象){
+	可能出现异常的代码：
+}catch（异常类名 变量名）{
+	异常处理的代码；
+}
+自动释放资源
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+### 4 特殊操作流
+
+
+
+#### 4.1 标准输入输出流
+
+System类中有两个静态的成员变量：
+
+* public static final InputStream in:标准输入流。通常该流对应于键盘输入或者由主机环境或用户指定的另一个输入源
+* public static final PrintStream out:标准输出流。通常该流对应于显示输出或由主机环境或用户指定的另一个输出目标
+
+自己实现键盘录入数据：
+
+* BufferedReader  br=new BufferedReader(new InputStreamReader(System.in));
+
+
+
+写起来太麻烦，Java提供了一个类实现键盘录入
+
+* Scanner sc=new Scanner(System.in);
+
+
+
+输出语句的本质：是一个标准的输出流
+
+* PrintStream ps=System.out;
+* PrintStream类有的方法，System.out都可以用
+
+
+
+
+
+
+
+
+
+
+
+#### 4.2 打印流
+
+打印流分类：
+
+* 字节打印流：PrintStream
+* 字符打印流：PrintWriter
+
+
+
+打印流的特点：
+
+* 只负责输出数据，不负责读取数据3
+* 有自己的特有方法
+
+
+
+字节打印流
+
+* PrintStream(String fileName):使用指定的文件名创建新的打印流
+* 使用继承父类的方法写数据，查看的时候会转码；使用自己特有的方法写数据，查看的时候原样输出
+
+
+
+字符打印流PrintWriter的构造方法：
+
+* PrintWriter(String fileName) 使用指定的文件名创建一个新的PrintWriter，而不需要自动执行刷新
+
+* PrintWriter(Writer out ,boolean autoFlush):
+
+   创建一个新的PrintWriter 
+
+  * out :字符输出流
+  * autoFlush：一个布尔值，如果为真，则println，printf，或format方法将刷新输出缓冲流
+
+
+
+
+
+
+
+
+
+#### 4.3 对象序列化流
+
+ 对象序列化：就是将对象全部保存到磁盘中，或者在网络中传输对象
+
+这种机制就是使用一个字节序列表示一个对象，该字节序列包含：对象的类型、对象的数据和对象中存储的属性等信息字节序列写到文件之后，相当于文件中持久保存了一个对象的信息
+
+反之，该字节序列还可以从文件中读取回来，重构对象，对它进行反序列化
+
+
+
+要实现序列化和反序列化流就要使用对象系列化流和对象反序列化流：
+
+* 对象序列化流：ObjectOutputStream
+* 对象反序列化流：ObjectInputStream
+
+
+
+**对象序列化流：ObjectOutputStream**
+
+* 将Java对象的原始数据类型和图形写OutputStream。可以使用ObjectOutputStream读取对象。可以通过使用流的文件来实现对象的持久存储。如果流是网络套接字流，则可以在另一个主机上或另一个进程中重构对象
+
+构造方法
+
+* ObjectOutputStream(OutPutStream out):创建一个写入指定的OutputStream的ObjectOutputStream
+
+序列化对象的方法：
+
+* void writeObject(Object obj):将指定的对象写入ObjectOutputStream
+
+
+
+**注意：**
+
+* 一个对象想要被序列化，该对象所属的类必须实现Serializable接口
+* Serializable 是一个标记接口，实现该接口不需要重写任何方法
+
+
+
+**对象反序列化流：：ObjectInputStream**
+
+* ：ObjectInputStream 反序列化先前使用：ObjectOutputStream编写的原始数据和对象
+
+
+
+构造方法
+
+* ：ObjectInputStream（InputStream）：创建从指定的InputStream读取ObjectInputStream
+
+
+
+反序列化对象的方法
+
+* Object readObject():从ObjectInputStream读取一个对象
+
+
+
+用对象序列化流序列化了一个对象后，假如我们修改了对象所属文件，读取数据会抛出**InvaildClassException**
+
+只要给所属的类添加一个serialVersionUID
+
+**private static final long serialVersionUID=42L;**
+
+
+
+如果一个对象中的某个成员变量不想被序列化
+
+* 给该成员变量加transient关键字修饰，该关键字标记的成员变量不参与序列化过程
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 4.4 Properties
+
+Properties概述：
+
+* 是一个Map体系的集合类
+* Properties可以保存到流中或从流中加载
+
+Properties作为集合的特有方法：
+
+* Object setProperty(String key,String value)  设置集合的键和值，都是String类型，底层调用Hashtable方法put
+
+* String getProperty(String key) 使用此属性列表中指定的键搜索属性
+
+* Set< String >stringPropertyNames( ) 从该属性列表中返回一个不可修改的键集，其中键及其对应的值是字符串
+
+  
+
+
+
+
+
+Properties和IO流结合的方法：
+
+* void load(InputStream inStream):   从输入字节流读取属性列表
+* **void load(Reader reader)** ： 从输入字符流读取属性列表
+* void store(OutputStream out,String comments)：将此属性列表（键和元素对）写入此Properties表中，以适合于使用load(InputStream)方法的格式写入输出流字节
+* **void store(Writer writer,String comments)** ：将此属性列表（键和元素对）写入此Properties表中，以适合于使用load（Reader）方法的格式写入输出字符流
+
+
+
+
+
+
+
+
+
+### 5、转换流
+
+![image-20220510210706287](https://www.itbaizhan.com/wiki/imgs/image-20220510210706287-165218802743017.png)
+
+InputStreamReader/OutputStreamWriter用来实现将字节流转化成字符流。
+
+**通过转换流解决乱码**
+
+ANSI(American National Standards Institute)美国国家标准协会
+
+* InputStreamReader :是对输入流进行转换，将输入字节流转换为字符流     字节->字符
+
+* OutputStreamWriter :是对输出流进行转换，将输出字符流转换为字节流     字符->字节
+
+
+
+### 6、数据流
+
+![image-20220510210327376](https://www.itbaizhan.com/wiki/imgs/image-20220510210327376-165218780905215.png)
+
+数据流将“基本数据类型与字符串类型”作为数据源，从而允许程序以与机器无关的方式从底层输入输出流中操作Java基本数据类型与字符串类型。
+
+DataInputStream和DataOutputStream提供了可以存取与机器无关的所有Java基础类型数据（如：int、double、String等）的方法。
+
+
+
+**使用数据流时，读取的顺序一定要与写入的顺序一致，否则不能正确读取数据。**
+
+### 7、FileUtils类中常用方法的介绍
+
+打开FileUtils的api文档，我们抽出一些工作中比较常用的方法，进行总结和讲解。总结如下：
+
+| 方法名                | 使用说明                                                     |
+| --------------------- | ------------------------------------------------------------ |
+| cleanDirectory        | 清空目录，但不删除目录                                       |
+| contentEquals         | 比较两个文件的内容是否相同                                   |
+| copyDirectory         | 将一个目录内容拷贝到另一个目录。可以通过FileFilter过滤需要拷贝的文件 |
+| copyFile              | 将一个文件拷贝到一个新的地址                                 |
+| copyFileToDirectory   | 将一个文件拷贝到某个目录下                                   |
+| copyInputStreamToFile | 将一个输入流中的内容拷贝到某个文件                           |
+| deleteDirectory       | 删除目录                                                     |
+| deleteQuietly         | 删除文件                                                     |
+| listFiles             | 列出指定目录下的所有文件                                     |
+| openInputSteam        | 打开指定文件的输入流                                         |
+| readFileToString      | 将文件内容作为字符串返回                                     |
+| readLines             | 将文件内容按行返回到一个字符串数组中                         |
+| size                  | 返回文件或目录的大小                                         |
+| write                 | 将字符串内容直接写到文件中                                   |
+| writeByteArrayToFile  | 将字节数组内容写到文件中                                     |
+| writeLines            | 将容器中的元素的toString方法返回的内容依次写入文件中         |
+| writeStringToFile     | 将字符串内容写到文件中                                       |
+
+读取文件内容，并输出到控制台上（只需一行代码！）
+
+**IOUtils的妙用**
+
+打开IOUtils的api文档，我们发现它的方法大部分都是重载的。所以，我们理解它的方法并不是难事。因此，对于方法的用法总结如下：
+
+| 方法名                                  | 使用说明                                                   |
+| --------------------------------------- | ---------------------------------------------------------- |
+| buffer                                  | 将传入的流进行包装，变成缓冲流。并可以通过参数指定缓冲大小 |
+| closeQueitly                            | 关闭流                                                     |
+| contentEquals                           | 比较两个流中的内容是否一致                                 |
+| copy                                    | 将输入流中的内容拷贝到输出流中，并可以指定字符编码         |
+| copyLarge                               | 将输入流中的内容拷贝到输出流中，适合大于2G内容的拷贝       |
+| lineIterator                            | 返回可以迭代每一行内容的迭代器                             |
+| read                                    | 将输入流中的部分内容读入到字节数组中                       |
+| readFully                               | 将输入流中的所有内容读入到字节数组中                       |
+| readLine                                | 读入输入流内容中的一行                                     |
+| toBufferedInputStream，toBufferedReader | 将输入转为带缓存的输入流                                   |
+| toByteArray，toCharArray                | 将输入流的内容转为字节数组、字符数组                       |
+| toString                                | 将输入流或数组中的内容转化为字符串                         |
+| write                                   | 向流里面写入内容                                           |
+| writeLine                               | 向流里面写入一行内容                                       |
+
+我们没有必要对每个方法做测试，只是演示一下读入d:/sxt.txt文件内容到程序中，并转成String对象，打印出来。
+
+
+
+
+
+### **8、IO总结**
+
+- 按流的方向分类：
+
+  - 输入流：数据源到程序(InputStream、Reader读进来)。
+  - 输出流：程序到目的地(OutputStream、Writer写出去)。
+
+  
+
+- 按流的处理数据单元分类：
+
+  - 字节流：按照字节读取数据(InputStream、OutputStream)。
+  - 字符流：按照字符读取数据(Reader、Writer)。
+
+- 按流的功能分类：
+
+  - 节点流：可以直接从数据源或目的地读写数据。
+  - 处理流：不直接连接到数据源或目的地，是处理流的流。通过对其他流的处理提高程序的性能。
+
+- IO的四个基本抽象类：InputStream、OutputStream、Reader、Writer
+
+- InputStream的实现类：
+
+  - FileInputStream
+  - BufferedInputStream
+  - DataInputStream
+  - ObjectInputStream
+
+- OutputStream的实现类：
+
+  - FileOutputStream
+  - BufferedOutputStream
+  - DataOutputStream
+  - ObjectOutputStream
+
+- Reader的实现类
+
+  - FileReader
+  - BufferedReader
+  - InputStreamReader
+
+- Writer的实现类
+
+  - FileWriter
+  - BufferedWriter
+  - OutputStreamWriter
+  - PrintWriter
+
+- 把Java对象转换为字节序列的过程称为对象的序列化。
+
+- 把字节序列恢复为Java对象的过程称为对象的反序列化。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Maven
+
+* Maven 是专门用于管理和构建Java项目的工具，它的主要功能有：
+  * 提供了一套标准化的项目结构
+  * 提供了一套标准化的构建流程（编译、测试、打包、发布......）
+  * 提供了一套依赖管理机制
+
+
+
+
+
+**Maven 提供了一套标准化的项目结构，所有的IDE使用Maven构建的项目结构完全一样，所有IDE创建的Maven项目可以通用**
+
+* 依赖管理：
+  * 依赖管理其实就是管理你项目所依赖的第三方资源包（jar包、插件...）
+
+
+
+### 1. Maven简介
+
+* Apache Maven 是一个项目管理和构建的工具，它基于项目对象模型的概念，通过一小段描述信息来管理项目的构建、报告和文档
+* 官网： <http://maven.apache.org/>
+
+
+
+
+
+
+
+**仓库分类：**
+
+	本地仓库：自己计算机上的一个目录
+	
+	中央仓库：由Maven团队维护的全球唯一的仓库
+	
+			地址：<http://repo1.maven.org/maven2/>	
+	
+	远程仓库：一般由公司团队搭建的私有仓库
+
+
+
+### Meaven 基本使用
+
+
+
+
+
+#### Maven常用命令
+
+* compile:  编译
+* clean:  清理
+* test:  测试
+* package:  打包
+* install:  安装
+
+
+
+
+
+#### Maven生命周期
+
+* Maven 构建项目生命周期描述的是一次构建过程经历了多少个事件
+* Maven对项目构建的生命周期划分为3套
+  * clean：清理工作
+  * default：核心工作、编译、测试、打包、安装等
+  * site：产生报告、发布站点
+
+
+
+
+
+#### Maven坐标
+
+* 使用坐标来定义项目或引入项目中需要的依赖
+
+* Maven 坐标的主要组成
+
+  * groupld :定义当前Maven项目隶属于组织名称（通常是域名反写，例如：com.itheima）
+  * artifactld : 定义当前Maven项目的名称（通常是模块名称）
+  * version : 定义当前项目的版本号
+
+  
+
+#### 依赖范围
+
+* 通过设置坐标的依赖范围（scope），可以设置 对应的jar包的作用范围：编译环境、测试环境、运行环境
+  * test: 
+  * provided:
+  * runtime:
+  * system:
+  * import:
+* < scope >默认值：compile
+
+## 异常
+
+### 1.1、异常概述
+
+**异常：**就是程序出现了不正常的情况
+
+
+
+**异常体系**	
+
+* Throwable
+  * Error
+  * Exception
+    * RuntimeException
+    * 非RuntimeException
+
+Error:严重问题，不需要处理
+
+Exception：称为异常类，它表示程序本身可以处理的问题
+
+* RuntimeException：在编译期间是不检查的，出现问题后，需要我们回来修改代码
+* 非RuntimeException：在编译期就必须处理的，否则程序不能通过编译，就更不能正常运行了
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ### 1.2、JVM默认处理方案
+
+如果程序出了问题，我们没有做任何处理，最终JVM会做出默认的处理
+
+* 把异常的名称，异常原因及异常出现的位置等信息输出在了控制台
+* 程序停止执行
+
+
+
+
+
+
+
+
+
+### 1.3、异常处理
+
+* try ... catch...
+* throws
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 1.4、异常处理之 try...catch...
+
+* 格式
+
+~~~
+  try{
+  	可能出现异常的代码;
+  }catch(异常类名 变量名){
+  		异常处理的代码;
+  }
+
+~~~
+  执行流程:
+
+  程序从try里面的代码开始执行
+
+  出现异常，会自动生成一个异常类对象，该异常对象将被提交给Java运行时系统  ，当Java运行时系统接收到异常对象时，会到catch中去找匹配的异常类，找到后进行异常处理
+
+  执行完毕后，程序还可以继续往下执行
+
+
+
+
+
+### 1.5、Throwable的成员方法
+
+> public String getMessage()    返回此throwable的详细消息字符串
+
+> public String toString ()    返回此可抛出的简短描述
+
+> public void printStackTrace()   把异常的错误信息输出在控制台
+
+
+
+
+
+
+
+
+
+
+
+### 1.6 编译时异常和运行时异常的区别
+
+Java中的异常被分为两大类：**编译时异常**和**运行时异常** ，也称为**受检异常**，**非受检异常**
+
+所有的RuntimeException类及其子类被称为运行时异常，其他的异常都是编译时异常
+
+
+
+* 编译时异常：必须显示处理，否则程序就会发生错误，无法通过执行
+* 运行时异常：无需显示处理，也可以和编译时异常一样出理
+
+
+
+### 1.7、异常处理之throws
+
+格式：
+
+> throws  异常类名
+
+* 这个格式是跟在方法的括号后面的
+
+
+
+
+
+
+
+### 1.8、自定义异常
+
+**格式**
+
+  ~~~
+public class 异常类名 extends Exception{
+	无参构造
+	带参构造
+}
+
+  ~~~
+### 1.9、throws和throw的区别
+
+**throws**
+
+* 在方法后面申明，跟的是异常类名
+* 表示抛出异常，由该方法的调用者来处理
+* 表示出现异常的一种可能性，并不一定会发生这些异常
+
+****
+
+**throw**
+
+* 在方法体内，跟的是异常对象名
+* 表示抛出异常，由方法体内的语句处理
+* 执行throw一定是抛出了某种异常
+
+
+
+### try-with-resourse
+
+~~~
+try(开启一个资源){
+
+}catch(){
+
+}
+//在IO的时候不需要自己去释放资源
+~~~
+## 多线程
+
+### 1、多线程的介绍
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、多线程的创建
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、多线程的使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4、线程的优先级以及守护线程
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###  5、线程同步
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 6、线程并发协作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3192,9 +4370,723 @@ Unicode字符集：
 
 
 
+### 1、反射介绍
 
 
-## 网络编程
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、获取Class对象
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、获取类的构造方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4、获取方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Lambda表达式
+
+### 1、Lambda表达式介绍
+
+
+
+
+
+
+
+### 2、Lambda表达式语法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、Lambda表达式入门案例
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4、Lambda表达式的使用
+
+## 网络编程(百战)
+
+### 1、网络编程基本概念
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、网络编程常用类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、TCP通信的实现
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4、UDP协议的实现
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 网络编程总结
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 网络编程（黑马）
+
+### 1、网络编程入门
+
+#### 1.1、网络编程概述
+
+**计算机网络**
+
+* 是指将地理位置不同的具有独立功能的多台计算机及其外部设备，通过通信线路连接起来，在网络操作系统，网络管理软件及网络通信协议的管理和协调下，实现资源共享和信息传递的计算机系统
+
+**网络编程**
+
+* 在网络通信协议下，实现网络互联的不同计算机上运行的程序间可以进行数据交换
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 1.2 网络编程的三要素
+
+**IP地址**
+
+* 要想让网络中的计算机能够相互通信必须为每台计算机指定一个标识号，通过这个标识号来指定要接收数据的计算机和识别发送的计算，而IP地址就是这个标识号。也就是设备的标识。
+
+**端口**
+
+* 网络的通信，本质上是两个应用程序的通信。每台计算机都有很多的应用程序，那么网络通信时，如何区分这些应用程序呢，，，，，如果说IP地址可以唯一标识网络中的设备，那么端口号就可以唯一标识设备中的应用程序了。也就是应用程序的标识
+
+
+
+
+
+**协议**
+
+* 通过计算机网络可以使多台计算机实现连接，位于同一个网络中的计算机再进行通信时需要遵守一定的规则，这就好比在道路中行驶的汽车需要遵守交通规则一样。在计算机网络中，这些连接和通讯的规则被称为网络通信协议，他对数据的传输格式、传输效率、传输步骤等做了统一规定，通信双方必须同时遵守才能完成数据交换。常见的协议有UDP协议和TCP协议
+
+
+
+#### 1.3 IP地址
+
+IP地址：是网络中设备的唯一标识
+
+
+
+IP地址分为两大类
+
+* IPv4：是给每个连接在网络上的主机分配一个32bit地址。按照TCP/IP规定，IP地址使用二进制来表示，每个IP地址长32bit，也就是4个字节。例如一个采用二进制形式的IP地址是“11000000 10 10 1000 00000001 01000010”这么长的IP地址，处理起来也太费劲了。为了方便使用，IP地址经常被写成10进制的形式，中间使用符号“ . ”分隔不同的字节。于是上面的IP地址可以用192.168.1.66 。IP地址的这种表示方法叫做 ” 点分十进制表示法 “ ，这显然比1和0容易记忆得多
+* IPv6：由于互联网的蓬勃发展，IP地址的需求量愈来愈大，但是网络地址资源有限，使得IP地址的分配越发紧张。为了扩大地址空间，通过IPv6重新定义了地址空间，采用128位地址长度，每16个字节一组，分成8组十六进制数，这样就解决了网络地址资源不够的问题
+
+
+
+常用命令：
+
+* ipconfig :查看本机IP地址
+* ping IP地址：检查网络是否连接
+
+特殊IP地址：
+
+* 127.0.0.1：是回送地址，可以表示本机地址一般用来测试使用
+
+
+
+
+
+
+
+#### 1.4 InetAddress 使用
+
+为了方便我们对IP地址的获取和操作，Java提供了一个类	InetAddress供我们使用
+
+
+
+InetAddress :此类表示Internet协议(IP)地址
+
+* static InetAddress getByName(String host): 确定主机名称的IP地址。主机名称可以是机器名称，也可以是IP地址
+* String getHostName(): 获取此IP地址的主机名
+* String getHostAddress()： 返回文本显示中的IP地址字符串
+
+
+
+
+
+
+
+
+
+
+
+#### 1.5 端口
+
+端口：设备上应用程序的唯一标识
+
+端口号：用两个字节表示的整数，他的取值范围是0~65535.其中，0~1023之间的端口号用于一些知名的网络服务和应用，普通的应用程序需要使用1024以上的端口号。如果端口号被另一个服务器或应用所占用，会导致当前程序启动失败
+
+
+
+
+
+#### 1.6 协议
+
+协议：计算机网络中，连接和通信的规则被称为网络通信协议
+
+
+
+**UDP协议**
+
+* 用户数据报协议（User Datagram Protocol）
+
+* UDP是无连接通信协议，即在数据传输时，数据的发送端和接收端不建立逻辑连接。简单来说，当一台计算机像另一台计算机发送数据时，发送端不会确认接收端是否存在，就会发送数据，同样接收端在收到数据时也不会向发送端反馈是否收到数据
+
+  由于使用UDP协议消耗资源小，通信效率高，所以通常都会用于音频、视频和普通数据的传输
+
+* 例如视频会议通常采用UDP协议，因为这种情况即使偶尔丢失一两个数据包，也不会对接收的结果产生太大的影响。但是使用UDP协议传送数据时，由于UDP的面向无连接性，不能保证数据的完整性，因此在传输重要数据时不建议使用UDP协议
+
+
+
+**TCP协议**
+
+* 传输控制协议(Transmission Control Protocol)
+* TCP协议是面向连接的通信协议，即传输数据之前，在发送端和接收端建立逻辑连接，然后再传输数据，它提供了两台计算机之间可靠无差错的数据传输。在TCP连接中必须要明确客户端和服务器端，由客户端向服务器发出连接请求，每次连接创建都需要经过"三次握手"
+* 三次握手：TCP协议中，在发送数据的准备阶段，客户端与服务器之间的三次交互，以保证连接可靠。
+  * 第一次握手，客户端向服务器发出连接请求，等待服务器确认
+  * 第二次握手，服务器向客户端回送一个响应，通知客户端收到了一个连接请求
+  * 第三次握手，客户端再次向服务器端发送确认信息，确认连接
+* 完成了三次握手之后，连接建立后，客户端和服务器就可以开始进行数据传输了。由于这种面向连接的特性，TCP协议可以保证传输数据的安全，所以应用十分广泛。例如上传文件、下载文件、浏览网页等
+
+**使用坐标导入jar坐标**
+
+* 在 pom.xml 中编写< dependencies >标签
+* 在< dependencies >标签中 使用< dependency > 引入坐标  
+* 定义坐标的 **groupId **,  **artifactId**,  **version**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、UDP通信程序
+
+#### 2.1、UDP通信原理
+
+UDP协议是一种不可靠的网络协议，它在通信的两端各建立一个Socket对象，但是这两个Socket只是发送，接收数据的对象
+
+因此 对于基于UDP协议的通信双方而言，没有所谓的客户端和服务器端的概念
+
+Java提供了DatagramSocket类作为基于UDP协议的Socket
+
+
+
+
+
+
+
+#### 2.2、UDP发送数据
+
+发送数据步骤
+
+1. 创建发送端Socket对象(DatagramSocjet
+
+   DatagramSocket()
+
+2. 创建数据，并把数据打包
+
+ 		DatagramPacket(byte[] bys,int length ,InetAddress address ,int port)
+
+3. 调用DatagramSocket对象的方法发送数据
+
+		void sent (DatagramPacket p)
+
+4. 关闭发送端
+
+		void close()
+
+
+
+### 3、TCP通讯程序
+
+#### 3.1、TCP通信原理
+
+TCP通信协议是一种可靠的网络协议，他在通信的两端各建立一个Socket对象，从而在通信的两端形成网络虚拟链路
+
+一旦建立了虚拟的网络链路，两端的程序就可以通过虚拟链路进行通讯
+
+
+
+Java对基于TCP协议的网络提供了良好的封装，使用Socket对象来表示两端的通信端口，并通过Socket产生IO流来进行网络通讯
+
+Java为客户端提供了Socket类，为服务器端提供了ServerSocket类
+
+
+
+
+
+#### 3.2、TCP发送数据
+
+发送数据步骤：
+
+* 创建客户端的Socket对象（Socket）
+
+  Socket(String out,int port)
+
+* 获取输出流，写数据
+
+  OutputStream getOutputStream()
+
+* 释放数据
+
+  void close()
+
+
+
+
+
+
+
+
+
+
+
+#### 3.3 、TCP接收数据
+
+接受数据的步骤
+
+* 创建服务器的Socket对象（ServerSocket）
+
+  ServerSocket(int port)
+
+* 监听客户端连接，返回一个Socket对象
+
+  Socket accept()
+
+* 获取输入流数据，读数据，并把数据显示在控制台
+
+		InputStream getInputStream()
+
+* 释放资源
+
+  void close
+
+
+
+## 数据结构
+
+
+
+### 1、数据结构简介
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、线性结构
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、树形结构
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3202,21 +5094,2137 @@ Unicode字符集：
 
 # 数据库
 
-## SQL语法
+## 一、基础篇
 
-### DDL
+### 1、MySQL概述
 
-### DML
+#### 1.1 数据库相关概念：
 
-### DQL
+数据库： 存储数据的仓库，数据是有组织的进行存储   DataBase
+
+数据库管理系统：操纵和管理数据库的大型软件   DataBase Managements Ststem 
+
+SQL ：操作关系型数据库的编程语言，定义了一套操作数据库统一**标准** Structured Query Language
+
+数据库的启动与停止
+
+* 启动
+
+net start mysql80
+
+* 停止
+
+net stop mysql80
+
+
+
+
+
+#### 1.2**客户端连接**
+
+mysql[-h 170.0.0.1] [-p 3306] -u root -p
+
+MYSQL自带的客户端命令行
+
+
+
+#### 1.3关系型数据库（RDBMS）
+
+概念：建立在关系模型的基础上，由多张相互连接的二维表组成的数据库
+
+**特点：**
+
+1. 使用表存储数据，格式统一，便于维护
+2. 使用SQL语言操作，标准统一，使用方便
+
+
+
+
+
+### 2、关系模型
+
+#### 2.1 主键
+
+* 对于关系表，有个很重要的约束，就是任意两条记录不能重复。不能重复不是指两条记录不完全相同，而是指能够通过某个字段唯一区分出不同的记录，这个字段被称为*主键*。
+
+
+
+* 关系数据库实际上还允许通过多个字段唯一标识记录，即两个或更多的字段都设置为主键，这种主键被称为联合主键。对于联合主键，允许一列有重复，只要不是所有主键列都重复即可
+
+
+
+* 主键是关系表中记录的唯一标识。主键的选取非常重要：主键不要带有业务含义，而应该使用BIGINT自增或者GUID类型。主键也不应该允许`NULL`。
+
+  可以使用多个列作为联合主键，但联合主键并不常用。
+
+
+
+
+
+
+
+#### 2.2 外键
+
+* 关系数据库通过外键可以实现一对多、多对多和一对一的关系。外键既可以通过数据库来约束，也可以不设置约束，仅依靠应用程序的逻辑来保证
+
+
+
+外键并不是通过列名实现的，而是通过定义外键约束实现的：
+
+```
+ALTER TABLE students
+ADD CONSTRAINT fk_class_id
+FOREIGN KEY (class_id)
+REFERENCES classes (id);
+其中，外键约束的名称fk_class_id可以任意，FOREIGN KEY (class_id)指定了class_id作为外键，REFERENCES classes (id)指定了这个外键将关联到classes表的id列（即classes表的主键）。
+```
+
+#### 2.3 索引
+
+索引是关系数据库中对某一列或多个列的值进行预排序的数据结构。通过使用索引，可以让数据库系统不必扫描整个表，而是直接定位到符合条件的记录，这样就大大加快了查询速度。
+
+
+
+* 唯一索引
+
+  通过创建唯一索引，可以保证某一列的值具有唯一性。
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、SQL
+
+#### 2.1 SQL通用语法
+
+1. SQL语句可以单行或者多行书写，以分号结尾。
+2. SQL语句可以用空格/缩进来增强语句的可读性。
+3. MySQL数据库的SQL语句不分大小写，关键字建议用大写
+4. 注释：
+   * 单行注释：--注释内容 或者 # 注释内容（MySQL特有）
+   * 多行注释：/* 注释内容 */
+
+
+
+#### 2.2 SQL分类
+
+* DDL    :数据定义语言，用来定义数据库对象（数据库，表，字段）
+
+* DML   ：数据库操作语言，用来对数据库表中的数据进行增删改
+* DQL    ：数据查询语言，用来查询数据库中表的记录
+* DCL     ：数据控制语言，用来创建数据库用户，控制数据库的访问权限
+
+
+
+
+
+#### 2.3 DDL
+
+##### 2.3.1DDL- 数据库操作
+
+* 查询
+  * 查询所有数据库       SHOW DATABASES;
+  * 查询当前数据库       SELECT DATABASE();
+
+* 创建
+  * CREATE DATABASE [ IF NOT EXITS ] 数据库名 [DEFAULT CHARSET 字符集] [COLLATE 排序规则]；
+* 删除
+  * DROP DATABASE [ IF EXIT ]数据库名；
+* 使用
+  * USE 数据库名
+
+##### 2.3.2 DDL-表操作
+
+###### 2.3.2.1查询
+
+* 查询当前数据库所有表        SHOW TABLES;
+* 查询表结构                           DESC 表名
+
+* 查询指定表的建表语句        SHOW CREATE TABLE 表名；
+
+###### 2.3.2.2创建
+
+* CREATE TABLE 表名（
+
+						字段1   字段1类型 [ COMMENT  字段1注释 ]，
+	
+						字段2   字段1类型 [ COMMENT  字段2注释 ]，
+	
+						字段3   字段1类型 [ COMMENT  字段3注释 ]，
+	
+						字段4   字段1类型 [ COMMENT  字段4注释 ]，
+	
+						............
+	
+						字段n   字段n类型 [ COMMENT  字段n注释 ]
+
+）[ COMMENT 表注释 ]；
+
+###### 2.3.2.3数据类型
+
+MySQL中的数据类型有很多，主要分为三类：数值类型、字符串类型、日期时间类型。
+
+加上 UNSIGNED 表示无负数
+
+1. 数值类型
+   1. 	TINYINT     1byte      小整数值
+   2.     SMALLINT   2bytes     大整数值
+   3.     MEDIUMINT  3bytes    大整数值
+   4.     INT 或者INTEGER 4bytes  大整数值
+   5.     BIGINT 8bytes   极大整数值
+   6.     FOLAT   4bytes   单精度浮点数值
+   7.     DOUBLE  8bytes   双精度浮点数值
+   8.     DECIMAL    小数值（精确定点数）
+
+2. 字符串类型
+   1. CHAR                0~255 bytes  定长字符串     性能高
+   2. VARCHAR         0~65535 bytes 变长字符串   占用的空间根据存储的内容而定
+   3. TINYBOLB         0~255 bytes   不超过255个字符的二进制数
+   4. TINYTEXT          0~255 bytes      短文本字符串
+   5. BLOB                 0~65535 bytes   二进制形式的长文本数据
+   6. TEXT                  0~65535 bytes   长文本数据
+   7. MEDIUMBLOB  0~16777215 bytes 二进制形式的中等长度文本数据
+   8. MEDIUMTEXT    0~16777215 bytes 中等长度文本数据
+   9. LONGBLOB       二进制形式的极大文本数据
+   10. LONGTEXT         极大文本数据
+3. 日期时间类
+   1. DATE              3					YYYY-MM-DD									日期值
+   2. TIME               3                    HH:MM:SS                                         时间值或持续时间
+   3. YEAR               1                    YYYY                                                   年份值
+   4. DATETIME      8                    YYYY-MM-DD HH:MM:SS                混合日期和时间值 
+   5. TIMESTAMP   4                    YYYY-MM-DD HH:MM:SS                混合日期和时间值，时间戳
+
+###### 2.3.2.4 修改
+
+* 添加字段
+
+  ALTER TABLE 表名 ADD 字段名 类型（长度）[ COMMENT 注释] [约束]；
+
+* 修改数据类型
+
+		ALTER TABLE 表名 MODIFY 字段名 新数据类型；
+
+* 修改字段名和字段类型
+
+  ALTER TABLE 表名 CHANGE 旧字段名 类型 [ COMMENT 注释] [约束]；
+
+* 删除字段
+
+  ALTER TABLE 表名 DROP 字段名；
+
+* 修改表名
+
+  ALTER TABLE 表名 RENAME TO 新表名；
+
+* 删除表
+  * DROP TABLE [ IF EXISTS ]表名；  删除表
+  * TRUNCATE TABLE 表名；删除指定表，并重新创建该表
+
+**注意：在删除表的时候，表中的数据也会被删除。**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2.4 DML
+
+* DML介绍
+
+  DML是用来对数据库中的数据记录进行增删改操作的。
+
+  * 添加数据 	**INSERT**
+  * 修改数据	 **UPDATA**
+  * 删除数据     **DELETE**
+
+* DML-添加数据
+
+  1. 给指定的字段添加数据
+
+     INSERT INTO 表名（字段1，字段2...） VALUES(值1，值2...)；
+
+  2. 给全部字段添加数据
+
+     INSERT INTO 表名VALUES（值1，值2...）；
+
+  3. 批量添加数据
+
+     INSERT 表名（字段1，字段2...） VALUES（值1，值2...），（值1，值2...），（值1，值2...）...
+
+     INSERT INTO表名 VALUES（值1，值2...），（值1，值2...）...；
+
+     **插入数据时，指定的字段顺序需要与指定的值得顺序一一对应的**
+
+     **字符串和日期数据应该包含在引号中**
+
+     **插入的数据大小应该在字段的规定范围内**
+
+     
+
+* DML- 修改数据
+
+  1. UPDATE 表名 SET  字段名1=值1，字段名2=值2，...[WHERE 条件]；
+
+     **修改语句的条件可以有，也可以没有，如果没有条件则回修改整张表的所有数据**
+
+* DML-删除数据
+
+  1. DELETE FROM 表名（WHERE 条件）；
+
+     1. **DELETE 语句的条件可以有，也可以没有，如果没有条件，则会删除整张表所有的数据。**
+     2. **DELETE语句不能删除某一个字段的值（可以用UPTATE）**
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2.5 DQL
+
+* DQL-介绍
+
+  DQL是数据查询语言，用来查询数据库表中的数据
+
+
+
+* DQL-语法
+
+  * SELETE
+
+     			字段列表
+
+    FROM
+
+    			表名列表
+
+    WHERE
+
+    			条件列表
+
+    GROUP BY
+
+    			分组字段列表
+
+    HAVING
+
+    			分组后条件列表
+
+    ORDER BY
+
+    			排序字段列表
+
+    LIMIT
+
+    			分页参数
+
+* 基本查询
+* 条件查询（WHERE)
+* 聚合函数(COUNT、MAX、MIN、MIN、AVG、SUM
+* 分组查询（GROUP BY）
+*  排序查询(ORDER BY)
+* 分页查询(LIMIT)
+
+##### 2.3.1 DQL-基本查询
+
+1. 查询多个字段
+
+   SELECT字段1，字段2，字段3...FROM表名
+
+   SELECT *FROM 表名
+
+2. 设置别名
+
+   SELECT 字段1[AS 别名1]， 字段2[AS 别名2]...FROM表名；
+
+3. 去除重复记录
+
+   SELECT DISTINCT 字段列表 FROM 表名
+
+
+
+##### 2.3.2 DQL-条件查询
+
+1. 语法
+
+   SELECT 字段列表 FROM 表名 WHERE 条件列表
+
+2. 条件
+
+		可以跟**比较运算符**和**逻辑运算符		
+	
+		BETWEEN...AND ...(在某个范围内，含最大小值)
+	
+		IN(...)在in之后的列表中的值，多选一
+	
+		LIKE  占位符  模糊匹配（_匹配单个字符，%匹配多个字符）
+	
+		IS NULL 是NULL
+
+
+
+##### 2.3.3 DQL-聚合函数
+
+1. 介绍
+
+   将一列数据作为一个整体，进行纵向计算。
+
+2. 常见聚合函数
+
+   1. count     统计数量
+   2. max        最大值
+   3. min         最小值
+   4. avg         平均值
+   5. sum        求和
+
+3. 语法
+
+		**SELECT 聚合函数（字段列表） FROM 表名；**
+	
+			**NULL值不参与所有聚合函数运算**
+	
+4. ##### 2.3.5 DQL-分组查询
+
+   1. 语法	
+
+      SELECT 字段列表 FROM 表名 [WHERE 条件] GROUP BY 分组字段名[HAVING 分组后过滤条件]
+
+   2. WHERE和HAVING区别
+      * 执行时机不同：WHERE是分组之前进行过滤，不满足WHERE条件，不参与分组；而HAVING 是分组之后对结果进行过滤。
+      * 判断条件不同：WHERE不能对聚合函数进行判断，而HAVING 可以。
+
+   **注意：**
+
+   			**执行顺序：WHERE>聚合函数>HAVING。**
+   	
+   			**分组之后，查询的字段一般为聚合函数和分组字段，查询其他的字段毫无意义**
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   ##### 2.3.6 DQL-排序查询
+
+   1. 语法
+
+   		SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1...；
+
+   2. 排序方式
+
+      * ASC ：升序（默认值）
+      * DESC：降序
+
+      **注意：如果是多字段排序，当地一个字段相同时，才会根据第二个字段进行排序**
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   ##### 2.3.7 DQL-分页查询
+
+   1. 语法
+
+      SELECT 字段列表 FROM 表名 LIMIT 起始索引，查询记录数；
+
+   **注意：**
+
+   * 起始索引是从0开始，起始索引=（查询页码-1）*每页显示记录数
+   * 分页查询是数据库的方言，不同的数据库有不同的实现，MySQL中是LIMIT
+   * 如果查询的是第一页数据，其实索引可以省略，直接简写为LIMIT=10；
+
+   
+
+   
+
+   
+
+   ##### 2.3.8 DQL-执行顺序
+
+   FROM
+
+   			表明列表
+
+   WHERE
+
+   			条件列表
+
+   GROUP BY
+
+   			分组字段列表
+
+   HAVING 
+
+   			分组后条件列表
+
+   SELECT
+
+   			字段列表
+
+   ORDER BY
+
+   			排序字段列表
+
+   LIMIT 
+
+   			分页参数
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   
+
+   #### 2.6 DCL
+
+   ##### 2.6.1 DCL介绍
+
+   DCL是用来管理数据库 用户、控制数据库的访问 权限
+
+   
+
+   
+
+   ##### 2.6.2 DCL-管理用户
+
+   * 查询用户
+
+     USE mysql;
+
+     SELECT * FROM USER;
+
+   * 创建用户
+
+     CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码'；
+
+   * 修改用户密码
+
+     ALTER USER '用户名'@'主机名' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY '新密码'；
+
+   * 删除用户
+
+     DROP USER '用户名'@'主机名';
+
+   ##### 2.6.3 DCL-权限控制
+
+   * MySQL中定义了很多种权限，但常用的只有：
+
+     1. ALL,ALL PRIVILEGES           所有权限
+
+     2. SELECT                                 查询数据
+     3. INSERT                                 插入数据
+     4. UPDATE                               修改数据
+     5. DELATE                                删除数据
+     6. ALTER                                  修改表
+     7. DROP                                  删除数据库/表/视图
+     8. CREATE                               创建数据库/表
+
+   * 查询权限
+
+     SHOW GRANTS FOR '用户名'@'主机名'；
+
+   * 授予权限
+
+     GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名'；
+
+   * 撤销权限
+
+     REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名'；
+
+   
+
+   **多个权限之间，使用逗号进行分隔**
+
+   **授权时，数据库名和表名可以使用*进行统配，代表所有。**
+
+
+
+
+
+
+
+
+
+
+
+### 4、函数
+
+**函数** 是指一段可以直接被另一段程序调用的程序或代码
+
+
+
+#### 4.1 、字符串函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 4.2、数值函数
+
+
+
+
+
+
+
+
+
+#### 4.3、日期函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 4.4、流程函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## JDBC API
 
+**JDBC 就是使用Java语言操作关系数据库的一套API**
+
+
+
+JDBC的好处是：
+
+- 各数据库厂商使用相同的接口，Java代码不需要针对不同数据库分别开发；
+- Java程序编译期仅依赖java.sql包，不依赖具体数据库的jar包；
+- 可随时替换底层数据库，访问数据库的Java代码基本不变。
+
+
+
+#### 1、DriverManager
+
+
+
+* DriverManager(驱动管理类)作用：
+
+  1. 注册驱动
+
+     Class.forName("com.mysql.jdbc.Driver");
+
+  2. 获取数据库连接
+
+     1. url:连接路径
+
+~~~
+    语法：jdbc:mysql://ip地址（域名）:端口号/数据库名称?参数键值对对1&参数键值对2....
+    示例：jdbc:mysql://127.0.0.1:3306/itheima
+    细节：
+    		如果连接的是本机的mysql服务器，并且mysql默认端口是3306，则url可以简写为:jdbc:mysql:///数据库名称？参数键值对
+    		配置useSSL=false参数，禁用安全连接方式，解决警告提示
+    		
+    ~~~
+
+ 2. user:用户名
+
+ 3. password:密码
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2、Connection
+
+* Connection(数据库连接对象)作用:
+
+  1. 获取执行SQL的对象
+
+     * 普通执行SQL对象
+
+       > Statement  createStatement()
+
+     * 预编译SQL的执行SQL对象：防止SQL注入
+
+       >PreparedStatement  preparedStatement (sql)
+
+     * 执行存储过程的对象
+
+       > CallableStatement prepareCall(sql)
+
+  
+
+  2. 管理事务
+
+     * MyAQL事务管理
+
+       >开启事务：BEGIN;/START TRANSACTION;
+       >
+       >提交事务：COMMIT;
+       >
+       >回滚事务：ROLLBACK;
+
+       MySQL默认自动提交事务
+
+     * JDBC 事务管理：Connection 接口中定义了3个对应的方法
+
+       >开启事务：setAutoCommit(boolean autoCommit): ture 为自动提交事务；false为手动提交事物，即为开启事务
+       >
+       >提交事务：commit()
+       >
+       >回滚事务：rollback()
+
+     **用try catch 来实现JDBC的事务管理**
+
+
+
+
+
+
+
+#### 3、Statement
+
+* Statement 作用：
+
+  1. 执行SQL语句
+
+     int  executeUpdate(sql):执行DML、DDL语句
+
+     返回值：（1）DML语句影响的行数（2）DDL语句执行成功后也有可能返回0
+
+     resultSet executeQuery(sql):执行DQL语句
+
+     返回值：ResultSet 结果集对象
+
+  
+
+
+
+
+
+
+
+#### 4、ResultSet
+
+* ResultSet（结果集对象）作用：
+
+  1. 封装了DQL语句的查询结果
+
+     > Result stmt.executeQuery(sql):执行DQL语句，返回ResultSet对象
+
+* 获取查询结果
+
+  > boolean next():(1)将光标从当前位置向前移动一行 （2）判断当前行是否为有效行
+
+  返回值：
+
+  * true：有效行，当前行有数据
+  * false：无效行，当前行没有数据
+
+  > xxx getXxx(参数)：获取数据
+
+  * xxx：数据类型；如 int getInt(参数)；String getString (参数)
+  * 参数：
+    * int:列的编号，从1开始
+    * String：列的名称
+
+* 使用步骤:
+
+  1. 游标向下移动一行，并判断该行是否为有效行：next()
+
+  2. 获取数据：getXxx(参数)
+
+     ~~~
+     //循环判断游标是否是最后一行末尾
+     while(rs.next()){
+     	//获取数据
+     	rs.getXxx(参数);
+     }
+     ~~~
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 5、PreparedStatement
+
+##### 5.1 PreparedStatement作用：
+
+1. 预编译SQL语句并执行：预防SQL注入问题
+
+   1. 获取PreparedStatement 对象
+
+      ~~~
+      //SQL语句中的参数值，使用？ 占位符代替
+      String sql="SELECT * FROM USER WHERE NAME=? AND PASSWORD =?";
+      
+      //通过Connection 对象获取，并传入对应的SQL语句
+      PreparedStatement patmt =conn.prepareStatement(sql);
+      ~~~
+
+   2. 设置参数值
+
+      ~~~
+      PreparedStatement 对象：SetXxx(参数1,参数2):给？赋值
+      Xxx：数据类型；如setInt(参数1，参数2)
+      参数：
+      	参数1：？的位置编号开始，从1开始
+      	参数2：？的值
+      ~~~
+
+   3. 执行SQL
+
+      >executeUpdate();/executeQuery();不需要再传递sql
+
+
+
+* SQL注入
+  * SQL注入是通过操作输入来修改事先定义好的SQL语句，用以达到执行代码对服务器进行**攻击**的方法
+
+
+
+
+
+
+
+**步骤：SQL注入演示**
+
+​			需求：完成用户登录
+
+SELECT*FROM tb_user WHERE username='张三'and password='123
+
+
+
+
+
+##### 5.2 PreparedStatement 原理
+
+* PreparedStatement 好处”
+
+  1. 预编译SQL，性能更高
+  2. 防止SQL注入：**将敏感字符进行转义**
+
+* PreparedStatement 预编译功能开启：useServerPrepStmts=true
+
+* 配置MySQL执行日志(重启mysql服务后生效)
+
+  ~~~
+  log-output=FILE
+  general-log=1
+  general_log_file="D:\mysql.log"
+  slow-query-log=1
+  slow_query_log-file="D:\mysql_slow.log"
+  long_query_time=2
+  ~~~
+
+  
+
+* PreparedStatement原理
+
+  1. 在获取PreparedStatement对象时，将SQL语句发送给MySQL服务器进行检查，编译（很耗时）
+  2. 执行时就不用在进行这些步骤了，速度更快
+  3. 如果SQL语句模板一样，则只需要一次检查、编译
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 数据库四大特性
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 数据库连接池
 
- 
+#### 1、数据库连接池简介
+
+* **数据库连接池**是一个容器，负责分配、管理数据库连接(Connection)
+* 它允许应用程序重复使用一个现有的数据库连接，而不是再重新建立一个
+* 它释放空闲时间超过最大空闲时间的数据库连接来避免因为没有释放数据库连接而引起的数据库连接遗漏
+* 好处
+  * 资源重开
+  * 提升系统响应速度
+  * 避免数据库连接遗漏
+
+#### 2、数据库连接池实现
+
+* 标准接口：DataSource
+
+  * 官方(SUN)提供的数据库连接池标准接口，由第三方组织实现该接口
+
+  * 功能：获取连接
+
+    > Connection getConnetioc()
+
+* 常见的数据库连接池
+
+  * DBCP
+  * C3P0
+  * Druid
+
+* Druid(德鲁伊)
+
+  * Druid连接池思是阿里巴巴开源的数据库连接池项目
+  * 功能强大，性能优秀，是Java语言最好的数据库连接池之一
+
+
+
+#### 3、Druid使用步骤
+
+1. 导入jar包durid-1.1.12.jar
+2. 定义配置文件
+3. 加载配置文件
+4. 获取数据库连接池对象
+5. 获取链接
+
+
+
+
+
+
+
+
+
+### MyBatis
+
+* MyBatis 是一款优秀的持久层框架，用于简化JDBC开发
+
+
+
+**持久层**
+
+* 负责将数据保存到数据库的那一层的代码
+* JavaEE三层架构：表现层、业务层、**持久层**
+
+**框架**
+
+* 框架就是一个半成品软件，是一套可重用的、通用的、软件基础代码模型
+* 在框架的基础之上构建软件编写更加的高效、规范、通用、可扩展
+
+#### MyBatis 快速入门
+
+
+
+
+
+
+
+
+
+
+
+
+
+# HTML/CSS/JS
+
+## HTML
+
+* html是一种语言所有的网页都是用html这门语言编写出来的
+* HTML（Hyper Text Markup Language）：超文本标记语言
+  * 超文本：超越了文本的限制，比普通文本的更强大的。除了文字信息，还可以定义图片、音频、视频等内容
+  * 标记语言：由标签构成的语言
+* HTML运行在浏览器上，HTML标签由浏览器来解析
+* HTML的标签都是预定义好的。例如：使用< img >展示图片
+* W3C标准：网页主要由三部分组成
+  * 结构：HTML
+  * 表现：CSS
+  * 行为：JavaScript
+
+
+
+
+
+
+
+
+
+### 1、HTML 快速入门
+
+1. 新建文本文件，后缀名改为.html
+
+2. 编写HTML结构标签
+
+3. 在< head >中定义关于文档的信息
+
+4. 在< title >中定义文档的标题
+
+5. 在< body >中定义文档的主体
+
+   
+
+
+
+
+
+
+
+### 2、基础标签
+
+* < h1 >~< h6 >  定义标题h1最大，h6最小
+
+* < font > 定义文本的字体、字体尺寸、字体颜色
+
+* < b >定义粗体文字
+
+* < i >定义斜体文字
+
+* < u >定义文本下划线
+
+* < center >定义文本居中
+
+* < p >定义段落
+
+* < br >定义拆行
+
+* < hr 定义水平线>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、图片、音频、视频标签
+
+* img:定义图片
+  * src：规定显示图像的URL（统一资源定位符）
+  * height：定义图像的高度
+  * width：定义图像的宽度
+* audio:定义音频。支持的音频格式：**MP3、WAV、OGG**
+  * src:规定音频的  URL
+  * controls：显示播放控件
+* video：定义视频。支持的视频格式：**MP4、WebM、OGG**
+  * src:规定视频的  URL
+  * controls：显示播放的控件
+
+
+
+
+
+
+
+
+
+### 4、超链接标签
+
+* < a > ：定义超链接，用于连接到另一个资源
+  * href：指定访问资源的URL
+  * target：指定打开资源的默认方式
+    * _self：默认值，在当前页面打开
+    * _blank：在空白页面打开
+
+
+
+
+
+
+
+
+
+### 5、列表标签
+
+* 有序标签(order list)
+
+  ~~~
+  <ol>
+  	<li>咖啡</li>
+  	<li>茶</li>
+  	<li>牛奶</li>
+  </ol>
+  ~~~
+
+* 无序列表(unorder list)
+
+  ~~~
+  <ul>
+  	<li>咖啡</li>
+  	<li>茶</li>
+  	<li>牛奶</li>
+  </ul>
+  ~~~
+
+  
+
+< ol > 定义有序列表
+
+< ul > 定义无序列表
+
+< li > 定义列表项
+
+* type：设置项目符号
+
+
+
+
+
+
+
+
+
+
+
+### 6、表格标签
+
+* < table > 定义表格
+  * border：规定表格边框的宽度
+  * width：规定表格的宽度
+  * cellspacing：规定单元格之间的空白
+* < tr >定义行
+  * align：定义表格行的内容对齐方式
+* < td >定义单元格
+  * rowspan：规定单元格可横跨的行数
+  * colspan：规定单元格可横跨的列数
+* < th >定义表头单元格
+
+~~~
+<table width="50%" border="1" cellspacing="0">
+    <tr height="50">
+        <th>序号</th>
+        <th>品牌Logo</th>
+        <th>品牌名称</th>
+        <th>企业名称</th>
+    </tr>
+    <tr align="center">
+        <td>010</td>
+        <td><img src="三只松鼠.png" width="60" heigth="50"></td>
+        <td>三只松鼠</td>
+        <td>三只松鼠</td>
+    </tr>
+    <tr align="center">
+        <td>009</td>
+        <td><img src="优衣库.png" width="60" heigth="50"></td>
+        <td>优衣库</td>
+        <td>优衣库</td>
+    </tr>
+    <tr align="center">
+        <td>008</td>
+        <td><img src="小米.png" width="60",height="50"></td>
+        <td>小米</td>
+        <td>小米科技有限公司</td>
+    </tr>
+</table>
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 7、布局标签
+
+* < div >：定义HTML文档中的一个区域部分，经常与CSS一起使用，用来布局网页
+* < span > :用于组合行内元素
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 8、表单标签
+
+* 表单：在网页中负责数据采集功能，使用< from >标签定义表单
+  * action:规定当提交表单时向何处发送表单数据，URL
+  * method:规定用于发送表单数据的方式
+    * get：浏览器会直接将数据附在表单的action URL之后。
+    * post：浏览器会将数据放到http请求消息中。无大小限制
+* 表单项(元素)：不同类型的input元素、下拉列表、文本域等
+  * < input >:表单项，通过type属性控制输入形式
+  * < select >:定义下拉列表，< option >定义列表项
+  * < textarea > :文本域
+* **type取值**
+  1. text                   默认值，定义单行的输入字段
+  2. password        定义密码字段
+  3. radio                定义单元按钮
+  4. checkbox        定义复选框
+  5. file                    定义文件上传按钮
+  6. hidden             定义隐藏的输入字段
+  7. submit             定义提交按钮，提交按钮会把表达把数据发送到服务器
+  8. reset               定义重置按钮，重置按钮会清除表单中的所有数据
+  9. button            定义可点击按钮
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## CSS
+
+* CSS是一门语言，用于控制网页表现
+
+​		CSS（Cascading Style Sheet）:层叠样式表
+
+
+
+### 1、CSS导入方式
+
+
+
+* CSS导入HTML有三种方式：
+
+  1. 内联样式：在标签的内部使用style属性，属性值是css属性键值对
+
+  ~~~ 
+  <div style="color:red">Hello CSS~</div>
+  ~~~
+
+  
+
+  2. 内部样式：定义< style >标签在标签内部定义CSS样式
+
+     ~~~
+     <style type="text/css">
+     	div{
+     		color:red;
+     	}
+     </style>
+     ~~~
+
+  3. 外部样式：定义link标签，引入外部的CSS文件
+
+  ~~~
+  <link rel ="stylesheet" href="demo.css">
+  ~~~
+
+  ~~~
+  demo.css:
+  div{
+  	color:red;
+  }
+  ~~~
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2、CSS选择器
+
+* 概念：选择器是选取需要设置样式的元素（标签）
+
+  ~~~
+  div{
+  	color:red;
+  }
+  ~~~
+
+* 分类：
+
+  1. 元素选择器
+
+     ~~~
+     元素名称{color:red;}  div{color:red;}
+     ~~~
+
+  2. id选择器
+
+     ~~~
+     #id属性值{color:red;} 
+     #name{color:red;}<div id="name">hello</div>
+     ~~~
+
+  3. 类选择器
+
+     ~~~
+     .class属性值{color：red;}
+     .cls{color:red;}<div class="cls">hello</div>
+     ~~~
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 3、CSS属性
+
+* 见W3schools
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## JavaScript
+
+* JavaScript是一门跨平台的、面向对象的脚本语言，用来控制网页行为的，他能使网页可交互
+* JavaScript和Java是完全不同的语言，无论是概念还是设计。但是基础语法类似
+
+
+
+
+
+
+
+
+
+### 1、JavaScript 引入方式
+
+1. **内部脚本：将JS代码定义在HTML页面中**
+
+   ~~~
+   <script>
+   	alert("hello JS~");
+   </script>
+   ~~~
+
+   *在HTML文档中可以在任意地方，放置任意数量的< script >*
+
+   *一般把脚本置于< body >元素的底部，可改善显示速度，因为脚本执行会拖慢显示*
+
+2. **外部脚本：将JS代码定义在外部JS文件中，然后引入到HTML页面中**
+
+* 外部文件：demo.js 
+
+  > alert("hello JS~");
+
+* 引入外部JS文件
+
+  > < script  src="../JS/demo.js">< /script >
+
+  1. *外部脚本不能包含< script >标签*
+  2. *< script >标签不能自闭和*
+
+
+
+### 2、JavaScript 基础语法
+
+#### 2.1 书写语法
+
+1. 区分大小写：与Java一样，变量名、函数名以及其他一切东西都是区分大小写的
+
+2. 每行结尾的分号可有可无
+
+3. 注释：
+
+   1. 单行注释：//注释内容
+   2. 多行注释：/\*注释内容\*/
+
+4. 大括号表示代码块
+
+   ~~~
+   if(count==3){
+   	alert(count);
+   }
+   ~~~
+
+   
+
+   
+
+   
+
+#### 2.2 输出语句
+
+* 使用window.alert() 写入警告框
+* 使用document.writer() 写入HTML输出
+* 使用console.log()学入浏览器控制台
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 2.3 变量
+
+* JavaScript 中用var 关键字（variable的缩写）来声明
+
+  ~~~
+  var test=20;
+  test="张三";
+  ~~~
+
+* JavaScript是一门弱类型语言，变量可以存放不同类型的值
+
+* 变量名需要遵循如下规则：
+
+  * 组成的字符可以是任何字母、数字、下划线、或$
+  * 数字不能开头
+  * 建议使用驼峰命名
+
+* ECMAScript6新增了**let**关键字来定义变量。它的用法类似于**var**，但是所声明的变量，只在**let**关键字所在的代码块内有效，且不允许重复声明
+
+* ECMAScript6新增了**let**关键字，用来声明一个只读的常量。一旦声明，常量的值就不能改变
+
+
+
+
+
+
+
+#### 2.4 数据类型
+
+JavaScript中分为：原始类型和应用类型
+
+5种原始类型：
+
+* number:数字(整数、小数、NaN(Not a Number))
+* string: 字符、字符串，单双引皆可
+* boolean:布尔。true,false
+* null:对象为空
+* undefined:当声明的变量未初始化时，该变量的默认值是undefined
+
+**使用typeof运算符可以获取数据类型**
+
+> alert(typeof age);
+
+
+
+**类型转换**
+
+* 其他类型转换未number类型
+
+  * string：按照字符串的字面值，转为数字，如果字面值不是数字，则转为NaN。。。一般使用parseInt
+
+  * boolean：true转为1，false转为0
+
+* 其他类型转化为boolean类型
+
+  * number：0和NaN转为false，其他的数字转为true
+  * string：空字符串转为false，其他的字符串转为true
+  * null：转为flase
+  * undefined：转为false
+
+#### 2.5、运算符
+
+* 一元运算符：++，--
+* 算术运算符：+，-，*，/，%
+* 赋值运算符：=，+=，-=...
+* 关系运算符：>,<,>=,<=,!=,==,===...
+* 逻辑运算符：&&,||,!
+* 三元运算符：条件表达式？true_value:false_value
+
+**==是值相等就返回真**
+
+**===是数据类型以及值都相等才返回真**
+
+
+
+
+
+#### 2.6、流程控制语句
+
+* if：
+* switch：
+* for：
+* while：
+* do...while...：
+
+
+
+
+
+
+
+
+
+#### 2.7、函数
+
+函数(方法)是被设计为执行特定任务的代码块
+
+* 定义：JavaScript通过function关键字进行定义，语法为：
+
+  ~~~
+  function functionName(参数1，参数2...){
+  	要执行代码
+  }
+  ~~~
+
+  **注意：**
+
+  ​		**形式参数不需要类型。因为JavaScript是弱类型语言**
+
+  ​		**返回值也不需要定义类型，可以在函数内部直接使用return返回即可**
+
+  ~~~
+  function add(a,b){
+  	return a+b;
+  }
+  ~~~
+
+  
+
+* 调用：函数名称(实际参数列表);
+
+  ~~~
+  let result=add(1,2)
+  ~~~
+
+* **定义方式二：**
+
+  ~~~
+  var functionName=function(参数列表){
+  	要执行的代码
+  }
+  ~~~
+
+* 调用：JS中，函数调用可以传递任意个数参数
+
+### 3、JavaScript 对象
+
+#### 3.1 Array
+
+JavaScript Array对象用于定义数组
+
+* 定义
+
+  ~~~
+  var 变量名=new Array(元素列表);//方法1
+  var arr=new Array(1,2,3)
+  
+  var 变量名=[元素列表]；//方法2
+  var arr=[1,2,3]
+  ~~~
+
+* 访问
+
+  ~~~
+  arr[索引]=值;
+  arr[0]=1;
+  ~~~
+
+**注意： JS数组类似于Java集合，长度，类型都可变**
+
+
+
+
+
+* 方法
+  * push：添加方法
+  * splice（start，end）：删除元素
+
+#### 3.2 String
+
+* 定义
+
+  ~~~
+  var 变量名=new String(s);//方式一
+  var str=new String("hello");
+  var 变量名=S;//方式二
+  var str="hello";
+  var str='hello';
+  ~~~
+
+* 属性
+
+  length    字符串的长度
+
+* 方法
+
+  charAt（）  返回指定位置的字符
+
+  IndexOf（）检索字符串
+
+  trim（）去除字符串两端的空白字符
+
+
+
+#### 3.3 自定义对象
+
+* 格式
+
+  ~~~
+  var 对象名称={
+  			属性名称1：属性值1，
+  			属性名称2：属性值2，
+  			...
+  			函数名称：function(形参列表){}
+  			...
+  			};
+  ~~~
+
+  
+
+
+
+
+
+### 4、BOM
+
+* Browser Object Model 浏览器对象模型
+* JavaScript 将浏览器的各个部分封装为对象
+* 组成
+  * Window：浏览器窗口对象
+  * Navigator：浏览器对象
+  * Screen：屏幕对象
+  * History：历史记录对象
+  * Location：地址栏对象
+
+#### 4.1 Window
+
+* Window：浏览器窗口对象
+* 获取：直接使用window，其中window.可以省略
+* 属性：获取其他的BOM对象
+  * history   对history对象的只读引用
+  * Navigator  对Navagator对象的只读引用
+  * Screen    对Screen对象道德只读引用
+  * location 用于窗口或框架的Location对象
+* 方法
+  * alert()  显示带有一段消息和一个确认按钮的警告框
+  * confirm() 显示带有一段消息以及确认按钮和取消按钮的对话框
+  * setInterval() 按照指定的周期来调用函数或计算表达式
+  * setTimeout()在指定的毫秒数后调用函数或计算表达式
+
+
+
+
+
+#### 4.2、History
+
+* History :历史记录
+
+* 获取：使用window.history获取，其中window.可以省略
+
+  ~~~
+  window.history.方法();
+  history.方法()；
+  ~~~
+
+* 方法
+
+  * back()    加载history列表中的前一个URL
+  * forward()  加载history列表中的下一个URL
+
+
+
+
+
+
+
+
+
+#### 4.3、location
+
+* Location：地址栏对象
+
+* 获取：使用window.location获取，其中window.可以省略
+
+  ~~~
+  window.location.方法();
+  location.方法();
+  ~~~
+
+* 属性
+
+  href   设置或返回完整的URL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 5、DOM
+
+
+
+* Document Object Model 文档对象模型
+* 将标记语言的各个组成部分封装为对象
+  * Document:整个文档对象
+  * Element:元素对象
+  * Attribute:属性对象
+  * Text:文本对象
+  * Comment:注释对象
+
+* **JavaScript通过DOM，就可以对HTML进行操作了**
+  * 改变HTML元素的内容
+  * 改变HTML元素的样式(CSS)
+  * 对HTML DOM事件做出反应
+  * 添加删除HTML元素
+
+**获取Element对象**
+
+* Element：元素对象
+
+* 获取：使用document对象的方法来获取
+
+  1. getElementById：根据Id属性值获取，返回一个Element对象
+  2. getElementsByTagName：根据标签名称获取，返回Element对象数组
+  3. getElementsByName：根据name属性值获取，返回Element对象数组
+  4. getElementsByClassName：根据class属性值获取，返回Element对象数组
+
+  
+
+
+
+
+
+
+
+**常见的HTML Element对象的使用**
+
+
+
+
+
+style：设置元素CSS样式
+
+innerHTML：设置元素内容
+
+
+
+
+
+### 6、事件监听
+
+* 事件：HTML事件是发生在HTML元素上的”事情”。比如：
+  * 按钮被点击
+  * 鼠标移动到元素之上
+  * 按下键盘按键
+* 事件监听：JavaScript可以在事件被侦测到时**执行代码**
+
+**事件绑定**
+
+* 方式一：通过HTML标签中的事件属性进行绑定
+
+  ~~~
+  <input type="buttom" onclik='on()'>
+  
+  function on(){
+  	alert("我被点了");
+  }
+  ~~~
+
+* 方式二：通过DOM元素属性绑定
+
+  ~~~
+  <input type="buttom" id="btn">
+  document.getElementById("btn").onclik=function(){
+  	alert("我被电了");
+  }
+  ~~~
+
+  
+
+
+
+
+
+
+
+
+
+### 7、正则表达式
+
+* 概念：正则表达式定义了字符串的组成规则
+
+* 定义：
+
+  1. 直接量：注意不要加引号
+
+     ~~~
+     var reg=/^\w{6,12}$/;
+     ~~~
+
+  2. 创建RegExp对象
+
+     ~~~
+     var reg=new RegExp("^\\w{6,12}$");
+     ~~~
+
+* 方法：
+
+  * test(str) :判断指定字符串是否符合规则，返回true或false
+
+* 语法：
+
+  * ^：表示开始
+  * $：表示结束
+  * []：代表在某个范围内的单个字符
+  * .：代表任意单个字符，除了换行和行结束符
+  * \w：代表单词字符：字母、数字、下划线
+  * \d：代表数字字符
+  * 量词：
+  * +：至少一个
+  * *：零个或多个
+  * ？：零个或一个
+  * {x}：x个
+  * {m,}：至少m个
+  * {m,n}：m到n个
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3224,7 +7232,120 @@ Unicode字符集：
 
 # web基础
 
-## Http/TCP协议
+## Web核心
+
+* Web：全球广域网，也成为万维网(www),能够通过浏览器访问的网站
+* JavaWeb：是用Java技术来解决相关web互联网领域的技术栈
+
+### JavaWeb 技术栈
+
+1. B/S架构：Browser/Server，浏览器/服务器架构模式，它的特点是，客户端只需要浏览器，应用程序的逻辑和数据都存储在服务器端。浏览器只需要请求服务器，获取Web资源，服务器把Web资源发送给浏览器即可
+   * 好处：易于维护升级：服务器端升级后，客户端无需任何部署就可以使用到新的版本
+2. 静态资源：HTML、CSS、JavaScript、图片等。负责页面展示
+3. 动态组员：Servlet、JSP等。负责逻辑处理
+4. 数据库：负责存储数据
+5. HTTP协议：定义通信规则
+6. Web服务器：负责解析HTTP协议，解析请求数据、并发送响应数据
+
+### HTTP
+
+* 概念：**H**yper **T**ext **T**ransfer **P**rotocol,超文本传输协议，规定了浏览器和服务器之间传输数据的规则
+* HTTP协议特点
+  1. 基于TCP协议：面向连接，**安全** 
+  2. 基于请求-响应模型的：一次请求对应一次响应
+  3. HTTP协议是无状态的协议：对于事物处理没有记忆能力。每次的请求-响应都是独立的
+     * 缺点：多次请求间不能共享数据。Java中使用会话的技术(Cookie、Session)来解决这个问题
+     * 优点：速度快
+
+#### HTTP-请求数据格式
+
+* 请求数据格式分为3部分：
+
+  1. **请求行**：请求数据的第一行。其中GET表示请求方式，/表示请求资源路径，HTTP/1.1表示协议版本
+  2. **请求体**：第二行开始，格式为key：value格式
+  3. **请求头**：POST请求的最后一部分，存放请求参数
+
+  ~~~
+  GET / HTTP/1.1
+  Host:www.itcast.cn
+  Connection:keep-alive
+  Cache-Control:max-age=0 Upgrade-Insecure-Request:1
+  User-Agent:Mozilla/5.0 Chrome/91.0.4472.106
+  
+  ...
+  ~~~
+
+* 常见的HTTP请求头
+
+  1. Host：表示请求主机名
+  2. User-Agent：浏览器版本
+  3. Accept：表示浏览器能接受的资源类型
+  4. Accept-Language：表示浏览器偏好的语言，服务器可以据此返回不同语言的网页
+  5. Accept-Encoding：表示浏览器可以支持压缩类型
+
+**GET请求和POST请求区别：**
+
+1. GET请求请求参数在请求行中，没有请求体。POST请求请求参数在请求体中
+2. GET请求请求参数大小有限制，POST没有
+
+
+
+
+
+
+
+#### HTTP-响应数据格式
+
+* 响应数据分为三部分
+
+  1. **响应行**：响应数据的第一行。其中HTTP/1.1标识协议版本，200表示响应状态码，OK表示状态码描述
+  2. **响应头**：第二行开始，格式为key：value形式
+  3. **响应体**：最后一部分。存放响应数据
+
+  ~~~
+  HTTP/1.1 200 OK
+  Server: Tengine
+  Content-Type:text/html
+  Transfer-Encoding:chunked...
+  
+  <html>
+  <head>
+  	<title></title>
+  </head>
+  <body></body>
+  </html>
+  ~~~
+
+  
+
+* **常见的HTTP响应头**
+  * Content-Type：表示该响应内容的类型
+  * Content-Length：表示该响应内容的长度
+  * Content-Encoding：表示响应压缩算法
+  * Cache-Control：指示客户端应如何缓存
+* 响应状态码
+
+| 状态码分类 | 说明                                                         |
+| ---------- | ------------------------------------------------------------ |
+| 1xx        | **响应中**——临时状态码，表示请求已经接受，告诉客户端应该继续请求或者如果它已经完成则忽略它 |
+| 2xx        | **成功**——表示请求已经被成功接收，处理已完成                 |
+| 3xx        | **重定向**——重定向到其它地方：它让客户端再发起一个请求以完成整个处理。 |
+| 4xx        | **客户端错误**——处理发生错误，责任在客户端，如：客户端的请求一个不存在的资源，客户端未被授权，禁止访问等 |
+| 5xx        | **服务器端错误**——处理发生错误，责任在服务端，如：服务端抛出异常，路由出错，HTTP版本不支持等 |
+
+状态码大全：https://cloud.tencent.com/developer/chapter/13553 
+
+
+
+
+
+
+
+
+
+
+
+### Web服务器
 
 
 
